@@ -1,0 +1,139 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 60px 30px;
+}
+
+/* Main container for the questionnaire */
+.container {
+    max-width: 800px;
+    margin: 40px auto; 
+    background: #fff;
+    padding: 10px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* A slightly softer shadow */
+}
+
+/* Styling for the main title and instruction text */
+h1 {
+    text-align: center;
+    color: #4a4a4a;
+    margin-bottom: 10px;
+}
+
+.container p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+
+/* Styling for each question block */
+.question-block {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Use :last-of-type to ensure the last block has no border */
+.question-block:last-of-type {
+    border-bottom: none;
+}
+
+/* Styling for the question text */
+.question-text {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #0056b3;
+}
+
+/* Container for the options list */
+.options {
+    list-style: none;
+    padding: 0;
+}
+
+/* Styling for each option item */
+.options li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    /* Add a smooth transition for hover effects */
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Add a hover effect for options */
+.options li:hover {
+    background-color: #e9e9e9;
+    border-color: #ccc;
+}
+
+
+/* --- Key Update: Styles for Checkboxes and Labels --- */
+
+/* Style for the label to make the entire row clickable and aligned */
+.options label {
+    display: flex;         /* Use flexbox to align checkbox and text */
+    align-items: center;   /* Vertically center the items */
+    padding: 12px 15px;    /* Provide comfortable padding */
+    cursor: pointer;       /* Show a pointer on hover */
+}
+
+/* Style for the checkbox input, replacing the old radio button style */
+input[type="checkbox"] {
+    width: 18px;           /* Make the checkbox slightly larger */
+    height: 18px;          /* for better visibility and interaction */
+    margin-right: 15px;    /* Add more space between the checkbox and the text */
+    cursor: pointer;       /* Keep the pointer cursor for the checkbox itself */
+}
+
+
+/* Styling for the submit button */
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 30px;
+    transition: background-color 0.2s;
+}
+
+/* Hover effect for the submit button */
+.submit-btn:hover {
+    background-color: #218838;
+}
+.success-container {
+    max-width: 600px; /* Make it a bit smaller */
+    margin: 60px auto; /* Center it with more vertical space */
+    background: #f0fff4; /* A light green background for success */
+    padding: 40px;
+    border-radius: 10px;
+    border: 2px solid #28a745; /* A solid green border */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center all text inside */
+}
+
+/* Style for the main heading in the success message */
+.success-container h1 {
+    color: #218838; /* A darker green for the heading text */
+    margin-bottom: 20px;
+}
+
+/* Style for the dynamic paragraph text in the success message */
+.success-container p {
+    color: #333; /* Dark text for readability */
+    font-size: 1.1em; /* Make the text slightly larger */
+    line-height: 1.5;
+}
+

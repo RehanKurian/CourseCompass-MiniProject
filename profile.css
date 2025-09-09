@@ -1,0 +1,250 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #dbeafe, #e5d5ff);
+    color: #333;
+    margin: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.profile-section {
+    padding-top: 80px; /* Reduced top padding */
+    padding-bottom: 60px;
+}
+
+.profile-header {
+    /* This section is not visible in the screenshot, but kept for structure */
+    display: none;
+}
+
+.alert-box {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 0 auto 2rem auto;
+    text-align: center;
+    max-width: 600px;
+    border: 1px solid #86efac;
+}
+
+/* --- Avatar Styles --- */
+.profile-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; /* Space between the avatar and the button */
+    margin-bottom: 2rem;
+}
+
+.avatar-circle {
+    width: 120px; 
+    height: 120px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border: 3px solid white; 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-initial {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #667eea; 
+}
+
+/* "Change Photo" button */
+.avatar-btn {
+    background: #ffffff;
+    color: #4f46e5;
+    border: 1px solid #e5e7eb;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.avatar-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+/* --- Main Profile Information Card --- */
+.profile-info {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 24px; /* Soft rounded corners */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+
+.info-card h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    color: #1f2937;
+    text-align: center;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.info-card h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #8860d0);
+    border-radius: 2px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.info-item, .password-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Make bio and password fields span the full width */
+.info-item:has(textarea), .password-wrapper {
+    grid-column: 1 / -1;
+}
+
+/* Label styles  */
+.info-label {
+    font-size: 0.75rem; /* Smaller font size */
+    font-weight: 600;
+    color: #6a63f5; /* Purple color for labels */
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Input field styles */
+.info-value input, .info-value textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb; /* Light gray border */
+    border-radius: 12px; /* Softer corners */
+    font-size: 1rem;
+    color: #1f2937;
+    background: #ffffff; /* Solid white background */
+    transition: all 0.2s ease;
+}
+
+.info-value input:focus, .info-value textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.info-value textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Password Toggle Styles */
+.info-value {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #9ca3af; /* Lighter icon color */
+}
+
+/* "Update Profile" Button */
+.btn-primary {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* --- Cropper Modal Styles --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.img-container {
+    height: 400px;
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    .info-item:has(textarea), .password-wrapper {
+        grid-column: 1;
+    }
+}
