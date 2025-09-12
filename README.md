@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # CourseCompass
 
 **CourseCompass** is a personalized course recommendation platform that helps learners discover relevant certification courses based on their interests, goals, and preferences. It integrates courses from popular platforms like Coursera and Udemy, and offers an intuitive quiz-based onboarding process to generate tailored suggestions.
@@ -24,6 +24,3 @@
 
 Contributions are welcome! If you have suggestions for improvements or new features, please feel free to submit a pull request.
 
-=======
-# CourseCompass
->>>>>>> 6bd995264629852a85ddb70bc7af64b2e60378d2
