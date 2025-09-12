@@ -10,11 +10,11 @@ body {
 /* Main container for the questionnaire */
 .container {
     max-width: 800px;
-    margin: 40px auto; 
+    margin: 40px auto;
     background: #fff;
     padding: 10px 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* A slightly softer shadow */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1)
 }
 
 /* Styling for the main title and instruction text */
@@ -28,6 +28,94 @@ h1 {
     text-align: center;
     color: #666;
     margin-bottom: 30px;
+}
+
+.flash-message {
+    padding: 15px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Hide form steps by default */
+.form-step {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+.form-step.active-step {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Navigation buttons container */
+.form-navigation {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.form-navigation .btn-prev {
+    margin-right: auto;
+   
+}
+
+.form-navigation button,
+.submit-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    min-width: 120px; 
+    text-align: center; 
+}
+
+/* 'Next' and 'Submit' button styling */
+.btn-next,
+.submit-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+/* 'Previous' button styling */
+.btn-prev {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+/* Progress Bar Styling */
+.progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 25px;
+    margin-bottom: 40px;
+    height: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 25px;
+    transition: width 0.4s ease-in-out;
 }
 
 
@@ -74,22 +162,27 @@ h1 {
 }
 
 
-/* --- Key Update: Styles for Checkboxes and Labels --- */
-
-/* Style for the label to make the entire row clickable and aligned */
 .options label {
-    display: flex;         /* Use flexbox to align checkbox and text */
-    align-items: center;   /* Vertically center the items */
-    padding: 12px 15px;    /* Provide comfortable padding */
-    cursor: pointer;       /* Show a pointer on hover */
+    display: flex;
+    /* Use flexbox to align checkbox and text */
+    align-items: center;
+    /* Vertically center the items */
+    padding: 12px 15px;
+    /* Provide comfortable padding */
+    cursor: pointer;
+    /* Show a pointer on hover */
 }
 
 /* Style for the checkbox input, replacing the old radio button style */
 input[type="checkbox"] {
-    width: 18px;           /* Make the checkbox slightly larger */
-    height: 18px;          /* for better visibility and interaction */
-    margin-right: 15px;    /* Add more space between the checkbox and the text */
-    cursor: pointer;       /* Keep the pointer cursor for the checkbox itself */
+    width: 18px;
+    /* Make the checkbox slightly larger */
+    height: 18px;
+    /* for better visibility and interaction */
+    margin-right: 15px;
+    /* Add more space between the checkbox and the text */
+    cursor: pointer;
+    /* Keep the pointer cursor for the checkbox itself */
 }
 
 
@@ -98,7 +191,6 @@ input[type="checkbox"] {
     display: block;
     width: 100%;
     padding: 15px;
-    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
@@ -109,31 +201,33 @@ input[type="checkbox"] {
     transition: background-color 0.2s;
 }
 
-/* Hover effect for the submit button */
-.submit-btn:hover {
-    background-color: #218838;
-}
+
 .success-container {
-    max-width: 600px; /* Make it a bit smaller */
-    margin: 60px auto; /* Center it with more vertical space */
-    background: #f0fff4; /* A light green background for success */
+    max-width: 600px;
+    /* Make it a bit smaller */
+    margin: 60px auto;
+    /* Center it with more vertical space */
+    background: #f0fff4;
+    /* A light green background for success */
     padding: 40px;
     border-radius: 10px;
-    border: 2px solid #28a745; /* A solid green border */
+    border: 2px solid #28a745;
+    /* A solid green border */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Center all text inside */
+    text-align: center;
+    /* Center all text inside */
 }
 
 /* Style for the main heading in the success message */
 .success-container h1 {
-    color: #218838; /* A darker green for the heading text */
+    color: #218838;
+    /* A darker green for the heading text */
     margin-bottom: 20px;
 }
 
 /* Style for the dynamic paragraph text in the success message */
 .success-container p {
-    color: #333; /* Dark text for readability */
-    font-size: 1.1em; /* Make the text slightly larger */
+    color: #333;
+    font-size: 1.1em;
     line-height: 1.5;
 }
-

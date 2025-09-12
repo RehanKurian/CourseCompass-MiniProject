@@ -174,14 +174,14 @@ include "navbar.php";
                     Join thousands of students and professionals who have accelerated their careers with CourseCompass
                 </p>
                 <div class="cta-buttons">
-                    <button class="btn btn-primary btn-large">
+                    <a class="btn btn-primary btn-large" href="quiz.php">
                         Take the Questionnaire
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12,5 19,12 12,19"></polyline>
                         </svg>
-                    </button>
-                    <button class="btn btn-outline-white btn-large">Browse Courses</button>
+                    </a>
+                    <a class="btn btn-outline-white btn-large" href="courses.php">Browse Courses</a>
                 </div>
             </div>
         </div>

@@ -39,13 +39,12 @@ include  'navbar.php';
                 </p>
                 <div class="hero-buttons">
                         <a class="btn-primary btn-large" href="quiz.php">
-                           Take Quiz Now
+                           Take The Questionnaire
                             <svg width="25" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12,5 19,12 12,19"></polyline>
                             </svg>
                         </a>
-                    <!-- <button class="btn-primary btn-large">Take Quiz Now</button> -->
                 </div>
             </div>
         </div>

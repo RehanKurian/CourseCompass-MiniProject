@@ -73,9 +73,6 @@ if (isset($_SESSION['flash_message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Questionnaire</title>
     <link rel="stylesheet" href="quiz.css">
-    <style>
-        /* Your flash-message CSS here */
-    </style>
 </head>
 
 <body>
@@ -93,11 +90,9 @@ if (isset($_SESSION['flash_message'])) {
         <h1>Course Questionnaire</h1>
         <p>Please select all options that apply to you.</p>
 
-        <form action="quiz.php" method="post">
+        <form id="quizForm" action="quiz.php" method="post">
             <?php
             // --- FORM DISPLAY LOGIC (using MySQLi) ---
-            // The $conn object is already available from 'db.php'.
-            
             $sql_questions = "SELECT question_id, question_text FROM questions ORDER BY question_id ASC";
             $result_questions = $conn->query($sql_questions);
 
@@ -131,23 +126,123 @@ if (isset($_SESSION['flash_message'])) {
                     } else {
                         echo '<p>No options available for this question.</p>';
                     }
-                    $stmt_options->close(); 
+                    $stmt_options->close();
                     echo '</div>';
                 }
             } else {
                 echo '<p>No questions found in the database.</p>';
             }
 
-            $conn->close(); 
+            $conn->close();
             ?>
 
-            <button type="submit" class="submit-btn">Get Recommendations</button>
+            <!-- This button will be moved by JavaScript -->
+            <button type="submit" class="submit-btn" style="display:none;">Get Recommendations</button>
         </form>
     </div>
+
+    <!-- NEW: JavaScript to create the multi-step functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const quizForm = document.getElementById('quizForm');
+            const questionBlocks = Array.from(quizForm.querySelectorAll('.question-block'));
+            const submitBtn = quizForm.querySelector('.submit-btn');
+
+            if (questionBlocks.length > 0) {
+                const questionsPerStep = 10;
+                const totalSteps = Math.ceil(questionBlocks.length / questionsPerStep);
+                let currentStep = 1;
+
+                // --- 1. Create and Insert Progress Bar ---
+                const progressContainer = document.createElement('div');
+                progressContainer.className = 'progress-container';
+                const progressBar = document.createElement('div');
+                progressBar.className = 'progress-bar';
+                progressBar.id = 'progressBar';
+                progressContainer.appendChild(progressBar);
+                quizForm.insertBefore(progressContainer, quizForm.firstChild);
+
+                // --- 2. Create Step Containers and Move Questions ---
+                const steps = [];
+                for (let i = 0; i < totalSteps; i++) {
+                    const stepDiv = document.createElement('div');
+                    stepDiv.className = 'form-step';
+                    stepDiv.dataset.step = i + 1;
+
+                    // Get questions for this step
+                    const stepQuestions = questionBlocks.slice(i * questionsPerStep, (i + 1) * questionsPerStep);
+                    stepQuestions.forEach(q => stepDiv.appendChild(q));
+
+                    // Add navigation
+                    const navDiv = document.createElement('div');
+                    navDiv.className = 'form-navigation';
+
+                    // Add 'Previous' button if not the first step
+                    if (i > 0) {
+                        const prevBtn = document.createElement('button');
+                        prevBtn.type = 'button';
+                        prevBtn.className = 'btn-prev';
+                        prevBtn.textContent = 'Previous';
+                        navDiv.appendChild(prevBtn);
+                    }
+
+                    // Add 'Next' button or 'Submit' button
+                    if (i < totalSteps - 1) {
+                        const nextBtn = document.createElement('button');
+                        nextBtn.type = 'button';
+                        nextBtn.className = 'btn-next';
+                        nextBtn.textContent = 'Next';
+                        navDiv.appendChild(nextBtn);
+                    } else {
+                        submitBtn.style.display = 'inline-block';
+                        navDiv.appendChild(submitBtn);
+                    }
+                    stepDiv.appendChild(navDiv);
+                    steps.push(stepDiv);
+                }
+
+                // Append all created steps to the form
+                steps.forEach(step => quizForm.appendChild(step));
+
+                // --- 3. JavaScript Functions to Control Steps and Progress Bar ---
+                function updateProgressBar() {
+                    const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                    document.getElementById('progressBar').style.width = progressPercent + '%';
+                }
+
+                function showStep(stepNumber) {
+                    steps.forEach(step => step.classList.remove('active-step'));
+                    const stepToShow = steps[stepNumber - 1];
+                    if (stepToShow) {
+                        stepToShow.classList.add('active-step');
+                        currentStep = stepNumber;
+                        updateProgressBar();
+                    }
+                }
+
+                // --- 4. Add Event Listeners for Navigation ---
+                quizForm.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('btn-next')) {
+                        if (currentStep < totalSteps) {
+                            showStep(currentStep + 1);
+                            window.scrollTo(0, 0);
+                        }
+                    } else if (e.target.classList.contains('btn-prev')) {
+                        if (currentStep > 1) {
+                            showStep(currentStep - 1);
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                });
+
+                // Initialize the first step
+                showStep(1);
+            }
+        });
+    </script>
 </body>
 
 </html>
 <?php
 // Flush the output buffer.
 ob_end_flush();
-?>

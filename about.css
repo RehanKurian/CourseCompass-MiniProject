@@ -18,66 +18,108 @@ body {
     padding: 0 20px;
 }
 
-/* Buttons */
+
 .btn {
-     padding: 12px 24px;
-    border: none;
+    padding: 12px 24px;
+    border: 2px solid transparent; /* Set a transparent border to prevent size changes on hover */
     border-radius: 8px;
     font-weight: 600;
     text-decoration: none;
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
     font-size: 1em;
 }
 
+/* Primary CTA button style */
 .btn-primary {
-    width: 100%;
-    padding: 12px 24px;
-    font-size: 1em;
-    font-weight: 600;
-    border-radius: 8px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    box-shadow: none;
 }
 
-.btn:hover {
+.btn-primary.btn-large {
+    padding: 16px 32px;
+    font-size: 1.1em;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
 }
 
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Shimmer effect for primary button */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+/* Outline button style for "Browse Courses" */
 .btn-outline-white {
     background: transparent;
     color: white;
     border: 2px solid white;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1em;
+    padding: 12px 30px;
+    box-shadow: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-outline-white.btn-large {
+    padding: 16px 32px;
+    font-size: 1.1em;
 }
 
 .btn-outline-white:hover {
     background: white;
     color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
 }
 
-.btn-large {
-    padding: 16px 32px;
-    font-size: 16px;
-}
-
-/* About Hero Section */
+/* --- About Hero Section --- */
 .about-hero {
     padding: 120px 0 20px;
-    position: relative;
-    overflow: hidden;
     min-height: 50vh;
     display: flex;
     align-items: center;
+    text-align: center;
 }
 
 .hero-content {
-    text-align: center;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -95,18 +137,25 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    display: inline-block;
 }
 
 .hero-description {
     font-size: 1.25rem;
     color: #666;
     margin-bottom: 40px;
-    line-height: 1.6;
 }
 
-/* Mission Section */
+/* --- Shared Section Title --- */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: #1a1a1a;
+}
+
+/* --- Mission Section --- */
 .mission {
+    padding: 80px 0;
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(10px);
 }
@@ -118,18 +167,10 @@ body {
     align-items: center;
 }
 
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 32px;
-    color: #1a1a1a;
-}
-
 .mission-description {
     font-size: 1.125rem;
     color: #666;
     margin-bottom: 24px;
-    line-height: 1.7;
 }
 
 .mission-description strong {
@@ -161,7 +202,7 @@ body {
     color: #666;
 }
 
-/* Problem Section */
+/* --- Problem Section --- */
 .problem {
     padding: 80px 0;
 }
@@ -186,7 +227,7 @@ body {
     padding: 24px;
     background: white;
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
     transition: transform 0.3s ease;
 }
 
@@ -208,7 +249,6 @@ body {
 
 .challenge-text p {
     color: #666;
-    line-height: 1.6;
 }
 
 .stats-card {
@@ -238,7 +278,7 @@ body {
     opacity: 0.9;
 }
 
-/* Solution Section */
+/* --- Solution Section --- */
 .solution {
     padding: 80px 0;
     background: linear-gradient(135deg, #dbeafe, #e5d5ff);
@@ -278,10 +318,9 @@ body {
 
 .solution-card p {
     color: #666;
-    line-height: 1.6;
 }
 
-/* Audience Section */
+/* --- Audience Section --- */
 .audience {
     padding: 80px 0;
 }
@@ -323,7 +362,6 @@ body {
 
 .audience-card p {
     margin-bottom: 24px;
-    line-height: 1.6;
     opacity: 0.9;
 }
 
@@ -350,15 +388,15 @@ body {
     color: #3b82f6;
 }
 
-/* CTA Section */
+/* --- CTA Section --- */
 .cta {
     padding: 80px 0;
     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
     color: white;
+    text-align: center;
 }
 
 .cta-content {
-    text-align: center;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -382,7 +420,7 @@ body {
     flex-wrap: wrap;
 }
 
-/* Footer */
+/* --- Footer --- */
 .footer {
     background: #1a1a1a;
     color: white;
@@ -405,7 +443,6 @@ body {
 
 .footer-description {
     color: #999;
-    line-height: 1.6;
 }
 
 .footer-title {
@@ -416,6 +453,7 @@ body {
 
 .footer-links {
     list-style: none;
+    padding-left: 0;
 }
 
 .footer-links li {
@@ -439,29 +477,15 @@ body {
     color: #999;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-}
-
-/* Responsive Design */
+/* --- Responsive Design --- */
 @media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    .section-title {
-        font-size: 2rem;
-    }
+    .hero-title { font-size: 2.5rem; }
+    .section-title { font-size: 2rem; }
     .mission-content,
-    .problem-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
+    .problem-grid,
     .audience-cards {
         grid-template-columns: 1fr;
+        gap: 40px;
     }
     .footer-grid {
         grid-template-columns: 1fr;
@@ -474,27 +498,15 @@ body {
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 0 16px;
-    }
-    .about-hero {
-        padding: 100px 0 60px;
-    }
-    .hero-title {
-        font-size: 2rem;
-    }
-    .hero-description {
-        font-size: 1rem;
-    }
+    .container { padding: 0 16px; }
+    .about-hero { padding: 100px 0 60px; }
+    .hero-title { font-size: 2rem; }
+    .hero-description { font-size: 1rem; }
     .visual-card,
     .solution-card,
-    .audience-card {
-        padding: 24px;
-    }
-    .challenge-item {
-        padding: 16px;
-    }
+    .audience-card,
     .stats-card {
         padding: 24px;
     }
+    .challenge-item { padding: 16px; }
 }
