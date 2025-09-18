@@ -174,7 +174,6 @@ body {
     overflow: hidden;
     transition: box-shadow 0.3s, transform 0.3s;
     position: relative;
-    /* REMOVED 'justify-content' and 'min-height' to allow flexbox to control height naturally */
 }
 
 .course-card::before {

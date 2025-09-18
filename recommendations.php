@@ -17,7 +17,7 @@ $sql = "
     JOIN courses c ON r.course_id = c.course_id
     WHERE r.user_id = ?
     ORDER BY r.score DESC
-    LIMIT 6;
+    LIMIT 10     ;
 ";
 
 $stmt = $conn->prepare($sql);

@@ -42,6 +42,10 @@ body {
     position: relative;
     overflow: hidden;
     text-decoration: none;
+    display: inline-flex;    /* Treats the button as a flex container */
+    align-items: center;     /* Vertically centers the items (text and SVG) */
+    justify-content: center; /* Horizontally centers the items */
+    gap: 5px;
 }
 
 .btn-primary:hover {

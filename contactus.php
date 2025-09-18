@@ -1,5 +1,6 @@
 <?php
 session_start();
+$home_link = (isset($_SESSION['email']) && isset($_SESSION['role'])) ? 'home.php' : 'index.php';
 // THIS ENTIRE BLOCK HANDLES THE FORM SUBMISSION
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

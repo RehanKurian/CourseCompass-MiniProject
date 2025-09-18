@@ -13,7 +13,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
     }
     .sidebar {
         width: 250px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: #ecf0f1;
         height: 100vh;
         padding: 20px;
@@ -25,7 +25,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px; /* Adds space between the logo and the text */
+        gap: 6px; /* Adds space between the logo and the text */
         padding-bottom: 20px; /* Adds space below the site name */
         color: #fff;
     }
@@ -91,6 +91,8 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
     <ul>
         <li><a href="admindash.php" class="<?= $currentPage == 'admindash.php' ? 'active' : '' ?>">Dashboard</a></li>
         <li><a href="usermanagement.php" class="<?= $currentPage == 'usermanagement.php' ? 'active' : '' ?>">User Management</a></li>
+        <li><a href="quizmanagement.php" class="<?= $currentPage == 'quizmanagement.php' ? 'active' : '' ?>">Quiz Management</a></li>
+        <li><a href="userrecommendations.php" class="<?= $currentPage == 'userrecommendations.php' ? 'active' : '' ?>">Recommendations</a></li>
         <li><a href="coursemanagement.php" class="<?= $currentPage == 'coursemanagement.php' ? 'active' : '' ?>">Course Management</a></li>
         <li><a href="adminprofile.php" class="<?= $currentPage == 'adminprofile.php' ? 'active' : '' ?>">Profile</a></li>
         <li><a href="signout.php">Logout</a></li>

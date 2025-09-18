@@ -1,4 +1,7 @@
 <?php
+session_start();
+$home_link = (isset($_SESSION['email']) && isset($_SESSION['role'])) ? 'home.php' : 'index.php';
+
 include "navbar.php";
 ?>
 

@@ -1,5 +1,10 @@
 <?php
 session_start();
+// Check if user is logged in
+if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'user') {
+    header("Location: login.php");
+    exit();
+}
 require_once "db.php";
 
 // --- Get the active category from the URL, default to 'all' ---

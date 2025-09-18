@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -86,7 +86,7 @@ body {
 }
 
 .form-container {
-    padding: 48px;
+    padding: 43px;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     border-radius: 24px;
@@ -107,7 +107,7 @@ body {
 
 .toggle-btn {
     flex: 1;
-    padding: 12px 24px;
+    padding: 10px 21px;
     border: none;
     background: transparent;
     color: #666;
@@ -133,7 +133,7 @@ body {
 }
 
 .form-title {
-    font-size: 2rem;
+    font-size: 26px;
     font-weight: 700;
     color: #1a1a1a;
     margin-bottom: 8px;

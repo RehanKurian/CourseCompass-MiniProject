@@ -1,3 +1,6 @@
+<?php
+$currentPage = basename($_SERVER['SCRIPT_NAME']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,22 +72,21 @@
             white-space: nowrap;
             color: #777373;
             font-weight: 500;
-            padding: 12px 20px;
+            padding: 12px 16px;
             border-radius: 8px;
             border: none;
             background: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 15px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             position: relative;
             transition: background 0.3s, color 0.3s;
         }
 
-        .nav-links a:hover,
-        .nav-links a.active {
-            background: rgba(102, 126, 234, 0.1);
+        .nav-links a.active,
+        .nav-links a:hover {
             color: #667eea;
         }
 
@@ -196,10 +198,11 @@
                 <span class="brand-text">CourseCompass</span>
             </div>
             <div class="nav-links">
-                <a href="home.php">Home</a>
-                <a href="about.php">About</a>
-                <a href="courses.php">Courses</a>
-                <a href="contactus.php">Contact Us</a>
+                <a href="<?= isset($home_link) ? $home_link : 'home.php' ?>" class="<?= $currentPage == 'home.php' || $currentPage == 'index.php' ? 'active' : '' ?>">Home</a>
+                <a href="about.php" class="<?= $currentPage == 'about.php' ? 'active' : '' ?>">About</a>
+                <a href="courses.php" class="<?= $currentPage == 'courses.php' ? 'active' : '' ?>">Courses</a>
+                <a href="myrecommendations.php" class="<?= $currentPage == 'myrecommendations.php' ? 'active' : '' ?>">My Recommendations</a>
+                <a href="contactus.php" class="<?= $currentPage == 'contactus.php' ? 'active' : '' ?>">Contact Us</a>
                 <button class="btn-primary" onclick="location.href='signout.php'">Sign Out
                 </button>
                 <a href="profile.php" class="profile-logo" title="Profile">

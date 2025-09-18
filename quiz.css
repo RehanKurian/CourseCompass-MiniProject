@@ -197,7 +197,6 @@ input[type="checkbox"] {
     font-size: 1.2em;
     cursor: pointer;
     text-align: center;
-    margin-top: 30px;
     transition: background-color 0.2s;
 }
 
