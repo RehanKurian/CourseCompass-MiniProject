@@ -40,8 +40,8 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         }
 
         .logo {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             border-radius: 8px;
             display: flex;
@@ -52,7 +52,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         }
 
         .brand-text {
-            font-size: 1.5rem;
+            font-size: 22px;
             font-weight: 700;
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             -webkit-background-clip: text;
@@ -72,12 +72,12 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             white-space: nowrap;
             color: #777373;
             font-weight: 500;
-            padding: 12px 16px;
+            padding: 12px 12px;
             border-radius: 8px;
             border: none;
             background: none;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 13px;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -111,7 +111,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         .btn-primary {
             width: 100%;
             padding: 12px 24px;
-            font-size: 16px;
+            font-size: 14px;
             border-radius: 8px;
             border: none;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

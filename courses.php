@@ -15,7 +15,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'load_more') {
 
     // The number of courses already loaded on the page.
     $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-    $limit = 15; // Number of courses to fetch each time.
+    $limit = 50; // Number of courses to fetch each time.
 
     // Base SQL query
     $query = "SELECT * FROM courses";
@@ -279,7 +279,7 @@ $stmt->close();
         </div>
     </main>
 
-
+<?php include 'footer.php'; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');

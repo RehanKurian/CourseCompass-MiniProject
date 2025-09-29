@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
         .main-content {
             margin-left: 250px;
             padding: 30px;
-            width: calc(100% - 250px);
+            width: 100%;
         }
 
         .header {

@@ -189,48 +189,6 @@ include "navbar.php";
             </div>
         </div>
     </section>
- <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        <div class="logo">🧭</div>
-                        <span class="brand-text">CourseCompass</span>
-                    </div>
-                    <p class="footer-description">
-                        Guiding your learning journey with personalized course recommendations.
-                    </p>
-                </div>
-                <div class="footer-column">
-                    <h3 class="footer-title">Platform</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">How it Works</a></li>
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Pricing</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3 class="footer-title">Support</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3 class="footer-title">Company</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Careers</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 CourseCompass. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <?php include "footer.php"; ?>
 </body>
 </html>

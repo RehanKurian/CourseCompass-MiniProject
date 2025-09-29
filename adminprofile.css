@@ -1,4 +1,11 @@
 /* Styling for the main profile card */
+.main-content {
+    margin-left: 250px;   /* same as sidebar width */
+    padding: 30px;
+    flex-grow: 1;
+    box-sizing: border-box;
+    min-height: 100vh;    /* ensures full height */
+}
 .profile-container {
     background-color: #fff;
     padding: 30px;

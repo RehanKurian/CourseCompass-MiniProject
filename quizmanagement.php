@@ -19,9 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_question'])) {
     }
 }
 
- // Handle Add Option form submission (now supports multiple options)
+// Handle Add Option form submission (now supports multiple options)
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_option'])) {
-    $question_id = (int)$_POST['question_id'];
+    $question_id = (int) $_POST['question_id'];
     $options_text = $_POST['option_text_multiple'];
 
     // Split the textarea content by new lines, trim whitespace, and filter out empty lines
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_option'])) {
         }
         $message = "<div class='alert success'>$success_count option(s) added successfully.</div>";
         if ($error_count > 0) {
-             $message = "<div class='alert error'>$success_count option(s) added successfully, but $error_count option(s) failed.</div>";
+            $message = "<div class='alert error'>$success_count option(s) added successfully, but $error_count option(s) failed.</div>";
         }
     } else {
         $message = "<div class='alert error'>Please select a question and enter at least one option.</div>";
@@ -51,10 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_option'])) {
 
 // Handle Add Tag and Assign form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_tag_assignment'])) {
-    $option_id = (int)$_POST['option_id'];
-    $course_id = (int)$_POST['course_id'];
+    $option_id = (int) $_POST['option_id'];
+    $course_id = (int) $_POST['course_id'];
     $tag_name = $conn->real_escape_string($_POST['tag_name']);
-    $weight = (int)$_POST['weight'];
+    $weight = (int) $_POST['weight'];
 
     if ($option_id > 0 && $course_id > 0 && !empty($tag_name) && $weight > 0) {
         // Start transaction
@@ -86,16 +86,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_tag_assignment']))
 // Fetch data for dropdowns
 $questions = $conn->query("SELECT question_id, question_text FROM questions ORDER BY question_id DESC");
 $options = $conn->query("SELECT o.option_id, o.option_text, q.question_text FROM options o JOIN questions q ON o.question_id = q.question_id ORDER BY o.option_id DESC");
-$courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC");
 
+// Fetch all courses into an array
+$courses_result = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC");
+$courses_list = [];
+while ($row = $courses_result->fetch_assoc()) {
+    $courses_list[] = $row;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Quiz Management - CourseCompass</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        html {
+            scrollbar-gutter: stable;
+        }
+
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
@@ -105,13 +115,19 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
         }
 
         .main-content {
-            padding-top: 90px;
-            padding-left: 280px; /* Adjust this value to match the width of your sidebar */
-            padding-right: 40px;
-            width: calc(100% - 320px); /* Adjust based on sidebar width + padding */
+            margin-left: 250px;
+            /* same as sidebar width */
+            padding: 30px;
+            flex-grow: 1;
+            box-sizing: border-box;
+            min-height: 100vh;
+            /* ensures full height */
+            background: #f8f9fa;
+            /* same as body background */
         }
-        
-        h1, h2 {
+
+        h1,
+        h2 {
             color: #3b82f6;
             font-weight: 700;
             border-bottom: 2px solid #e5e5e5;
@@ -124,7 +140,7 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
             border-radius: 12px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .form-group {
@@ -138,7 +154,8 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
             color: #555;
         }
 
-          .form-control, textarea.form-control {
+        .form-control,
+        textarea.form-control {
             width: 100%;
             padding: 12px;
             border-radius: 8px;
@@ -148,12 +165,14 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
             transition: border-color 0.3s;
             font-family: 'Inter', sans-serif;
         }
-        .form-control:focus, textarea.form-control:focus {
+
+        .form-control:focus,
+        textarea.form-control:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
         }
-        
+
         .btn {
             padding: 12px 24px;
             font-size: 16px;
@@ -170,6 +189,7 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
             display: inline-block;
             text-align: center;
         }
+
         .btn-submit:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
@@ -181,11 +201,13 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
             margin-bottom: 20px;
             font-weight: 500;
         }
+
         .alert.success {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
+
         .alert.error {
             background-color: #f8d7da;
             color: #721c24;
@@ -193,11 +215,11 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
         }
     </style>
 </head>
+
 <body>
 
-    <div>
-        <?php include 'adminsidebar.php'; ?>
-    </div>
+
+    <?php include 'adminsidebar.php'; ?>
 
     <div class="main-content">
         <h1>Quiz Management</h1>
@@ -210,13 +232,14 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
             <form action="quizmanagement.php" method="post">
                 <div class="form-group">
                     <label for="question_text">Question Text</label>
-                    <input type="text" id="question_text" name="question_text" class="form-control" placeholder="e.g., What is your primary learning goal?" required>
+                    <input type="text" id="question_text" name="question_text" class="form-control"
+                        placeholder="e.g., What is your primary learning goal?" required>
                 </div>
                 <button type="submit" name="add_question" class="btn btn-submit">Add Question</button>
             </form>
         </div>
 
-          <!-- Section 2: Add an Option for a Question -->
+        <!-- Section 2: Add an Option for a Question -->
         <div class="management-section">
             <h2>Step 2: Add Options for a Question</h2>
             <form action="quizmanagement.php" method="post">
@@ -224,17 +247,21 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
                     <label for="question_id">Select Question</label>
                     <select id="question_id" name="question_id" class="form-control" required>
                         <option value="">-- Select a Question --</option>
-                        <?php 
+                        <?php
                         $questions->data_seek(0);
-                        while($row = $questions->fetch_assoc()): 
-                        ?>
-                            <option value="<?php echo $row['question_id']; ?>"><?php echo htmlspecialchars($row['question_text']); ?></option>
+                        while ($row = $questions->fetch_assoc()):
+                            ?>
+                            <option value="<?php echo $row['question_id']; ?>">
+                                <?php echo htmlspecialchars($row['question_text']); ?>
+                            </option>
                         <?php endwhile; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="option_text_multiple">Option Texts (one per line)</label>
-                    <textarea id="option_text_multiple" name="option_text_multiple" class="form-control" placeholder="Enter each option on a new line, for example:&#10;To start a new career&#10;To get a promotion&#10;To explore a hobby" rows="5" required></textarea>
+                    <textarea id="option_text_multiple" name="option_text_multiple" class="form-control"
+                        placeholder="Enter each option on a new line, for example:&#10;To start a new career&#10;To get a promotion&#10;To explore a hobby"
+                        rows="5" required></textarea>
                 </div>
                 <button type="submit" name="add_option" class="btn btn-submit">Add Options</button>
             </form>
@@ -251,32 +278,33 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
                         <?php
                         // Reset pointer and re-fetch for this loop
                         $options->data_seek(0);
-                        while($row = $options->fetch_assoc()): 
-                        ?>
-                            <option value="<?php echo $row['option_id']; ?>"><?php echo htmlspecialchars($row['option_text'] . ' (For Q: ' . substr($row['question_text'], 0, 40) . '...)'); ?></option>
+                        while ($row = $options->fetch_assoc()):
+                            ?>
+                            <option value="<?php echo $row['option_id']; ?>">
+                                <?php echo htmlspecialchars($row['option_text'] . ' (For Q: ' . substr($row['question_text'], 0, 40) . '...)'); ?>
+                            </option>
                         <?php endwhile; ?>
                     </select>
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
                     <label for="tag_name">New Tag Name</label>
-                    <input type="text" id="tag_name" name="tag_name" class="form-control" placeholder="e.g., Career Change" required>
+                    <input type="text" id="tag_name" name="tag_name" class="form-control"
+                        placeholder="e.g., Career Change" required>
                 </div>
                 <div class="form-group">
                     <label for="course_id">Assign to Course</label>
                     <select id="course_id" name="course_id" class="form-control" required>
                         <option value="">-- Select a Course --</option>
-                         <?php 
-                         // Reset pointer and re-fetch for this loop
-                         $courses->data_seek(0);
-                         while($row = $courses->fetch_assoc()): 
-                         ?>
-                            <option value="<?php echo $row['course_id']; ?>"><?php echo htmlspecialchars($row['title']); ?></option>
-                        <?php endwhile; ?>
+                        <?php foreach ($courses_list as $row): ?>
+                            <option value="<?php echo $row['course_id']; ?>"><?php echo htmlspecialchars($row['title']); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="weight">Assign Weight (1-3)</label>
-                    <input type="number" id="weight" name="weight" class="form-control" min="1" max="3" placeholder="e.g., 3" required>
+                    <input type="number" id="weight" name="weight" class="form-control" min="1" max="3"
+                        placeholder="e.g., 3" required>
                 </div>
                 <button type="submit" name="add_tag_assignment" class="btn btn-submit">Create & Assign Tag</button>
             </form>
@@ -285,4 +313,5 @@ $courses = $conn->query("SELECT course_id, title FROM courses ORDER BY title ASC
     </div>
 
 </body>
+
 </html>

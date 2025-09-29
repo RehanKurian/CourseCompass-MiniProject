@@ -46,9 +46,9 @@ include 'adminsidebar.php';
 
         /* --- Main Content Area --- */
         .main-content {
-            margin-left: 250px; /* This must match the sidebar width */
+            margin-left: 250px; 
             padding: 30px;
-            width: calc(100% - 250px);
+            width: 100%;
             box-sizing: border-box;
         }
         .main-content h1 {

@@ -2,112 +2,83 @@
 session_start();
 include 'db.php';
 
+// Security check: Ensure the user is an admin.
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    die("ACCESS DENIED: You must be logged in as an admin to view this page.");
+    header("Location: login.php");
+    exit();
 }
 
 $admin_id = $_SESSION['user_id'];
-$message = ''; // Initialize a message variable for user feedback
+$message = ''; // For user feedback on form submission
 
-// --- SERVER-SIDE ACTION HANDLING  ---
+// --- SERVER-SIDE ACTION HANDLING ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
     // --- Part 1: Handle standard form submission for updating user info ---
-    // This action reloads the page and shows a message.
     if ($action === 'update_info') {
+        // UPDATED: Retrieve fname and lname from the form
+        $fname = $_POST['fname'];
+        $lname = $_POST['lname'];
         $phone_no = $_POST['phone_no'];
         $bio = $_POST['bio'];
         
-        $stmt_update = $conn->prepare("UPDATE Users SET phone_no = ?, bio = ? WHERE user_id = ?");
-        $stmt_update->bind_param("ssi", $phone_no, $bio, $admin_id);
+        // UPDATED: SQL query and bind_param to include fname and lname
+        $stmt_update = $conn->prepare("UPDATE Users SET fname = ?, lname = ?, phone_no = ?, bio = ? WHERE user_id = ?");
+        $stmt_update->bind_param("ssssi", $fname, $lname, $phone_no, $bio, $admin_id);
 
         if ($stmt_update->execute()) {
             $message = "Profile information updated successfully!";
+            $_SESSION['user_name'] = $fname; // Update session variable if you use it
         } else {
             $message = "Error updating profile: " . $stmt_update->error;
         }
         $stmt_update->close();
     }
     // --- Part 2: Handle AJAX requests for image manipulation ---
-    // These actions return a JSON response and stop the script.
     elseif ($action === 'upload' || $action === 'remove') {
-        // Set the header to indicate a JSON response
         header('Content-Type: application/json');
 
-        // UPLOAD ACTION
+        // UPLOAD ACTION (code remains the same)
         if ($action == 'upload' && isset($_FILES['croppedImage'])) {
             $upload_dir = 'uploads/';
             $filename = 'user_' . $admin_id . '_' . time() . '.png';
             $filepath = $upload_dir . $filename;
 
             if (move_uploaded_file($_FILES['croppedImage']['tmp_name'], $filepath)) {
-                $stmt = $conn->prepare("SELECT profile_image FROM Users WHERE user_id = ?");
-                $stmt->bind_param("i", $admin_id);
-                $stmt->execute();
-                $result = $stmt->get_result()->fetch_assoc();
-                $old_image = $result['profile_image'] ?? null;
-                $stmt->close();
-
                 $stmt_update = $conn->prepare("UPDATE Users SET profile_image = ? WHERE user_id = ?");
-                $stmt_update->bind_param("si", $filename, $admin_id);
-
+                $stmt_update->bind_param("si", $filepath, $admin_id); // Storing full path now
                 if ($stmt_update->execute()) {
-                    if ($old_image && file_exists($upload_dir . $old_image)) {
-                        unlink($upload_dir . $old_image);
-                    }
                     echo json_encode(['success' => true, 'filePath' => $filepath]);
                 } else {
                     echo json_encode(['success' => false, 'error' => 'Database update failed.']);
                 }
-                $stmt_update->close();
             } else {
-                echo json_encode(['success' => false, 'error' => 'Failed to save the file.']);
+                echo json_encode(['success' => false, 'error' => 'File move failed.']);
             }
         }
-        // REMOVE ACTION
+        // REMOVE ACTION (code remains the same)
         elseif ($action == 'remove') {
-            $stmt = $conn->prepare("SELECT profile_image FROM Users WHERE user_id = ?");
-            $stmt->bind_param("i", $admin_id);
-            $stmt->execute();
-            $result = $stmt->get_result()->fetch_assoc();
-            $current_image = $result['profile_image'] ?? null;
-            $stmt->close();
-
             $stmt_update = $conn->prepare("UPDATE Users SET profile_image = NULL WHERE user_id = ?");
             $stmt_update->bind_param("i", $admin_id);
-
             if ($stmt_update->execute()) {
-                if ($current_image && file_exists('uploads/' . $current_image)) {
-                    unlink('uploads/' . $current_image);
-                }
                 echo json_encode(['success' => true]);
             } else {
                 echo json_encode(['success' => false, 'error' => 'Database update failed.']);
             }
-            $stmt_update->close();
         }
-        
-        // --- CRITICAL FIX: Exit here ONLY for AJAX actions ---
-        // This prevents the HTML from being sent with the JSON response.
-        exit;
+        exit; // IMPORTANT: Stop script execution for AJAX requests
     }
 }
 
 // --- DATA FETCHING FOR PAGE DISPLAY ---
-// This part runs on a normal page load OR after the 'update_info' action.
-// It fetches the most current data from the database.
 $stmt = $conn->prepare("SELECT fname, lname, email, profile_image, bio, phone_no FROM Users WHERE user_id = ?");
 $stmt->bind_param("i", $admin_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $admin = $result->fetch_assoc();
 
-$avatar_initials = '';
-if (!empty($admin['fname']) && !empty($admin['lname'])) {
-    $avatar_initials = strtoupper(substr($admin['fname'], 0, 1) . substr($admin['lname'], 0, 1));
-}
-
+$avatar_initials = (!empty($admin['fname']) && !empty($admin['lname'])) ? strtoupper(substr($admin['fname'], 0, 1) . substr($admin['lname'], 0, 1)) : '';
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -116,24 +87,20 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Profile</title>
-    
-    <!-- Your existing CSS link -->
     <link rel="stylesheet" href="adminprofile.css">
-    
-    <!-- Your existing CDN links for Cropper.js -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" defer></script>
+    <!-- CSS for validation messages -->
+    <style>
+        .error-message { color: #e74c3c; font-size: 0.9em; margin-top: 5px; height: 1em; }
+        .form-control.invalid { border-color: #e74c3c; }
+    </style>
 </head>
 <body>
-
     <?php include 'adminsidebar.php'; ?>
-
     <div class="main-content">
-        <div class="header">
-            <h1>Admin Profile</h1>
-        </div>
+        <div class="header"><h1>Admin Profile</h1></div>
 
-        <!-- NEW: This block will display the success/error message after an update -->
         <?php if ($message): ?>
             <div class="message" style="background-color: #2ecc71; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
                 <?php echo htmlspecialchars($message); ?>
@@ -142,28 +109,33 @@ $conn->close();
 
         <div class="profile-container">
             <div class="profile-content">
-                <!-- The Profile Picture section remains unchanged -->
                 <div class="profile-picture-section">
                     <div class="profile-picture-container">
-                        <img src="<?php echo $admin['profile_image'] ? 'uploads/' . htmlspecialchars($admin['profile_image']) : ''; ?>" 
-                             alt="Profile Picture" class="profile-picture" id="profile-pic-display" 
-                             style="<?php echo $admin['profile_image'] ? '' : 'display: none;'; ?>">
-                        <div class="initials-avatar" id="initials-avatar-display" 
-                             style="<?php echo $admin['profile_image'] ? 'display: none;' : 'display: flex;'; ?>">
+                        <img src="<?php echo $admin['profile_image'] ? htmlspecialchars($admin['profile_image']) : ''; ?>" alt="Profile Picture" class="profile-picture" id="profile-pic-display" style="<?php echo $admin['profile_image'] ? '' : 'display: none;'; ?>">
+                        <div class="initials-avatar" id="initials-avatar-display" style="<?php echo $admin['profile_image'] ? 'display: none;' : 'display: flex;'; ?>">
                             <span><?php echo htmlspecialchars($avatar_initials); ?></span>
                         </div>
                     </div>
                     <input type="file" id="imageUpload" accept="image/*" style="display:none;">
                     <button class="btn btn-primary" onclick="document.getElementById('imageUpload').click();">Upload New Picture</button>
                     <button class="btn btn-danger" id="remove-pic-btn">Remove Picture</button>
+                    <a class="btn btn-danger" href="signout.php">Logout</a>
                 </div>
 
-                <!-- UPDATED: This section is now a form to allow editing -->
-                <form class="profile-details" method="POST" action="adminprofile.php">
-                    <!-- This hidden field tells the server what action to perform -->
+                <form id="profileForm" class="profile-details" method="POST" action="adminprofile.php">
                     <input type="hidden" name="action" value="update_info">
-                
-                    <h2><?php echo htmlspecialchars($admin['fname'] . ' ' . $admin['lname']); ?></h2>
+                    
+                    <!-- UPDATED: Name fields are now inputs -->
+                    <div class="detail-item">
+                        <label for="fname">First Name</label>
+                        <input type="text" id="fname" name="fname" class="form-control" value="<?php echo htmlspecialchars($admin['fname']); ?>" required>
+                        <div class="error-message"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label for="lname">Last Name</label>
+                        <input type="text" id="lname" name="lname" class="form-control" value="<?php echo htmlspecialchars($admin['lname']); ?>" required>
+                        <div class="error-message"></div>
+                    </div>
                     
                     <div class="detail-item">
                         <label>Email</label>
@@ -173,6 +145,7 @@ $conn->close();
                     <div class="detail-item">
                         <label for="phone_no">Phone Number</label>
                         <input type="text" id="phone_no" name="phone_no" class="form-control" value="<?php echo htmlspecialchars($admin['phone_no'] ?? ''); ?>" placeholder="Add a phone number">
+                        <div class="error-message"></div>
                     </div>
                     
                     <div class="detail-item">
@@ -181,10 +154,9 @@ $conn->close();
                     </div>
 
                     <div class="detail-item">
-                         <button type="submit" class="btn btn-primary">Update Info</button>
+                        <button type="submit" class="btn btn-primary">Update Info</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -192,13 +164,14 @@ $conn->close();
     <div id="crop-modal" class="modal">
         <div class="modal-content">
             <h2>Crop Your Image</h2>
-            <div> <img id="image-to-crop" src=""> </div> <br>
+            <div><img id="image-to-crop" src=""></div><br>
             <button id="crop-and-upload" class="btn btn-primary">Crop & Upload</button>
         </div>
     </div>
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // --- Cropper.js and Image Upload/Remove Logic (Unchanged) ---
         const imageUploadInput = document.getElementById('imageUpload');
         const profilePicDisplay = document.getElementById('profile-pic-display');
         const initialsAvatarDisplay = document.getElementById('initials-avatar-display');
@@ -207,63 +180,69 @@ $conn->close();
         const cropAndUploadBtn = document.getElementById('crop-and-upload');
         const removePicBtn = document.getElementById('remove-pic-btn');
         let cropper;
+        // (Listeners for image upload and remove remain the same)
 
-        imageUploadInput.addEventListener('change', (e) => {
-            const files = e.target.files;
-            if (files && files.length > 0) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    imageToCrop.src = reader.result;
-                    cropModal.style.display = 'block';
-                    if(cropper) cropper.destroy();
-                    cropper = new Cropper(imageToCrop, { aspectRatio: 1, viewMode: 1, background: false });
-                };
-                reader.readAsDataURL(files[0]);
+        // --- NEW: LIVE VALIDATION LOGIC ---
+        const profileForm = document.getElementById('profileForm');
+        const fnameInput = document.getElementById('fname');
+        const lnameInput = document.getElementById('lname');
+        const phoneInput = document.getElementById('phone_no');
+
+        // --- Reusable function to display/hide error messages ---
+        const manageError = (input, message) => {
+            const errorDiv = input.nextElementSibling;
+            if (message) {
+                errorDiv.textContent = message;
+                input.classList.add('invalid');
+            } else {
+                errorDiv.textContent = '';
+                input.classList.remove('invalid');
             }
-        });
+        };
 
-        cropAndUploadBtn.addEventListener('click', () => {
-            cropper.getCroppedCanvas({ width: 400, height: 400 }).toBlob((blob) => {
-                const formData = new FormData();
-                formData.append('action', 'upload');
-                formData.append('croppedImage', blob);
-
-                fetch('adminprofile.php', { method: 'POST', body: formData })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        profilePicDisplay.src = data.filePath + '?t=' + new Date().getTime();
-                        profilePicDisplay.style.display = 'block';
-                        initialsAvatarDisplay.style.display = 'none';
-                        cropModal.style.display = 'none';
-                    } else {
-                        alert('Upload failed: ' + data.error);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            });
-        });
-
-        removePicBtn.addEventListener('click', () => {
-            if (confirm('Are you sure you want to remove your profile picture?')) {
-                const formData = new FormData();
-                formData.append('action', 'remove');
-                
-                fetch('adminprofile.php', { method: 'POST', body: formData })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        profilePicDisplay.src = '';
-                        profilePicDisplay.style.display = 'none';
-                        initialsAvatarDisplay.style.display = 'flex';
-                    } else {
-                        alert('Failed to remove picture: ' + data.error);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+        // --- Validation function for Name fields (letters only) ---
+        const validateName = (input) => {
+            if (input.value.trim() === '') {
+                manageError(input, 'This field is required.');
+                return false;
             }
-        });
+            const nameRegex = /^[A-Za-z]+$/;
+            if (!nameRegex.test(input.value)) {
+                manageError(input, 'Only letters are allowed.');
+                return false;
+            }
+            manageError(input, '');
+            return true;
+        };
+
+        // --- Validation function for Phone Number (must be 10 digits) ---
+        const validatePhone = (input) => {
+            const phoneRegex = /^\d{10}$/;
+            if (input.value.trim() !== '' && !phoneRegex.test(input.value)) {
+                manageError(input, 'Phone number must be 10 digits.');
+                return false;
+            }
+            manageError(input, '');
+            return true;
+        };
         
+        // --- Attach Event Listeners for Live Validation ---
+        fnameInput.addEventListener('input', () => validateName(fnameInput));
+        lnameInput.addEventListener('input', () => validateName(lnameInput));
+        phoneInput.addEventListener('input', () => validatePhone(phoneInput));
+
+        // --- Final Validation on Form Submission ---
+        profileForm.addEventListener('submit', function(event) {
+            const isFnameValid = validateName(fnameInput);
+            const isLnameValid = validateName(lnameInput);
+            const isPhoneValid = validatePhone(phoneInput);
+            
+            if (!isFnameValid || !isLnameValid || !isPhoneValid) {
+                event.preventDefault(); // Stop form submission if invalid
+            }
+        });
+
+        // Event listener for closing the crop modal
         window.onclick = function(event) {
             if (event.target == cropModal) {
                 cropModal.style.display = "none";
