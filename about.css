@@ -21,7 +21,7 @@ body {
 
 .btn {
     padding: 12px 24px;
-    border: 2px solid transparent; /* Set a transparent border to prevent size changes on hover */
+    border: 2px solid transparent; 
     border-radius: 8px;
     font-weight: 600;
     text-decoration: none;
@@ -77,7 +77,6 @@ body {
     left: 100%;
 }
 
-/* Outline button style for "Browse Courses" */
 .btn-outline-white {
     background: transparent;
     color: white;
@@ -320,7 +319,6 @@ body {
     color: #666;
 }
 
-/* --- Audience Section --- */
 .audience {
     padding: 80px 0;
 }
@@ -388,7 +386,6 @@ body {
     color: #3b82f6;
 }
 
-/* --- CTA Section --- */
 .cta {
     padding: 80px 0;
     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
@@ -420,7 +417,6 @@ body {
     flex-wrap: wrap;
 }
 
-/* --- Responsive Design --- */
 @media (max-width: 768px) {
     .hero-title { font-size: 2.5rem; }
     .section-title { font-size: 2rem; }

@@ -425,14 +425,12 @@ body {
     .hero-title {
         font-size: 30px;
     }
-
-
     .section-title {
-        font-size: 2rem;
+        font-size: 30px;
     }
 
     .cta-title {
-        font-size: 2rem;
+        font-size: 30px;
     }
 
     .audience-grid {
@@ -460,7 +458,7 @@ body {
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 30px;
     }
 
     .hero-description {

@@ -37,21 +37,12 @@ include 'adminsidebar.php';
     <style>
         /* --- Base and Admin Layout Styles --- */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
             background-color: #f4f7f6;
             color: #333;
-            display: flex; /* This is key for the sidebar layout */
         }
-
-        /* --- Main Content Area --- */
-        .main-content {
-            margin-left: 250px; 
-            padding: 30px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .main-content h1 {
+        .content h1 {
             font-size: 2rem;
             margin-bottom: 30px;
             color: #1a1a1a;
@@ -120,7 +111,6 @@ include 'adminsidebar.php';
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- Recommendation Item Styling --- */
         .recommendation-item {
             padding: 0.8rem 0;
             border-bottom: 1px solid #e5e7eb;
@@ -150,7 +140,7 @@ include 'adminsidebar.php';
 <body>
 
     <!-- Main content container that sits next to the sidebar -->
-    <div class="main-content">
+    <div class="content">
         <h1>All User Recommendations</h1>
 
         <?php if ($result_users->num_rows > 0): ?>

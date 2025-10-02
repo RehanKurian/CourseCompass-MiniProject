@@ -102,28 +102,12 @@ while ($row = $courses_result->fetch_assoc()) {
     <title>Quiz Management - CourseCompass</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        html {
-            scrollbar-gutter: stable;
-        }
-
+     
         body {
             margin: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: #f8f9fa;
             color: #333;
-            display: flex;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            /* same as sidebar width */
-            padding: 30px;
-            flex-grow: 1;
-            box-sizing: border-box;
-            min-height: 100vh;
-            /* ensures full height */
-            background: #f8f9fa;
-            /* same as body background */
         }
 
         h1,
@@ -213,6 +197,130 @@ while ($row = $courses_result->fetch_assoc()) {
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                padding: 18px;
+                padding-left: 50px;
+            }
+
+            .management-section {
+                padding: 18px;
+                margin-bottom: 18px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 0;
+                padding: 12px;
+                min-width: 0;
+            }
+
+            .management-section {
+                padding: 12px;
+                margin-bottom: 14px;
+            }
+
+            h1,
+            h2 {
+                font-size: 1.3rem;
+                padding-bottom: 6px;
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 8px;
+                min-width: 0;
+            }
+
+            .management-section {
+                padding: 8px;
+                margin-bottom: 10px;
+                border-radius: 8px;
+            }
+
+            h1,
+            h2 {
+                font-size: 1.1rem;
+                padding-bottom: 4px;
+                margin-bottom: 8px;
+            }
+
+            .form-group label {
+                font-size: 0.95rem;
+                margin-bottom: 5px;
+            }
+
+            .form-control,
+            textarea.form-control {
+                font-size: 0.95rem;
+                padding: 8px;
+                border-radius: 6px;
+            }
+
+            .btn {
+                font-size: 0.95rem;
+                padding: 10px 16px;
+                border-radius: 6px;
+            }
+
+            .alert {
+                font-size: 0.95rem;
+                padding: 10px;
+                border-radius: 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 2px;
+            }
+
+            .management-section {
+                padding: 4px;
+                margin-bottom: 6px;
+                border-radius: 5px;
+            }
+
+            h1,
+            h2 {
+                font-size: 0.95rem;
+                padding-bottom: 2px;
+                margin-bottom: 4px;
+            }
+
+            .form-group label {
+                font-size: 0.85rem;
+                margin-bottom: 3px;
+            }
+
+            .form-control,
+            textarea.form-control {
+                font-size: 0.85rem;
+                padding: 6px;
+                border-radius: 5px;
+            }
+
+            .btn {
+                font-size: 0.85rem;
+                padding: 8px 10px;
+                border-radius: 5px;
+            }
+
+            .alert {
+                font-size: 0.85rem;
+                padding: 7px;
+                border-radius: 5px;
+            }
+        }
     </style>
 </head>
 
@@ -221,7 +329,7 @@ while ($row = $courses_result->fetch_assoc()) {
 
     <?php include 'adminsidebar.php'; ?>
 
-    <div class="main-content">
+    <div class="content">
         <h1>Quiz Management</h1>
 
         <?php echo $message; ?>
@@ -232,8 +340,7 @@ while ($row = $courses_result->fetch_assoc()) {
             <form action="quizmanagement.php" method="post">
                 <div class="form-group">
                     <label for="question_text">Question Text</label>
-                    <input type="text" id="question_text" name="question_text" class="form-control"
-                        placeholder="e.g., What is your primary learning goal?" required>
+                    <input type="text" id="question_text" name="question_text" class="form-control" required>
                 </div>
                 <button type="submit" name="add_question" class="btn btn-submit">Add Question</button>
             </form>
@@ -260,8 +367,7 @@ while ($row = $courses_result->fetch_assoc()) {
                 <div class="form-group">
                     <label for="option_text_multiple">Option Texts (one per line)</label>
                     <textarea id="option_text_multiple" name="option_text_multiple" class="form-control"
-                        placeholder="Enter each option on a new line, for example:&#10;To start a new career&#10;To get a promotion&#10;To explore a hobby"
-                        rows="5" required></textarea>
+                        placeholder="Enter each option on a new line" rows="5" required></textarea>
                 </div>
                 <button type="submit" name="add_option" class="btn btn-submit">Add Options</button>
             </form>
@@ -288,8 +394,7 @@ while ($row = $courses_result->fetch_assoc()) {
                 </div>
                 <div class="form-group">
                     <label for="tag_name">New Tag Name</label>
-                    <input type="text" id="tag_name" name="tag_name" class="form-control"
-                        placeholder="e.g., Career Change" required>
+                    <input type="text" id="tag_name" name="tag_name" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="course_id">Assign to Course</label>
@@ -303,8 +408,7 @@ while ($row = $courses_result->fetch_assoc()) {
                 </div>
                 <div class="form-group">
                     <label for="weight">Assign Weight (1-3)</label>
-                    <input type="number" id="weight" name="weight" class="form-control" min="1" max="3"
-                        placeholder="e.g., 3" required>
+                    <input type="number" id="weight" name="weight" class="form-control" min="1" max="3" required>
                 </div>
                 <button type="submit" name="add_tag_assignment" class="btn btn-submit">Create & Assign Tag</button>
             </form>

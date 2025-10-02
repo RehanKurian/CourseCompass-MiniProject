@@ -1,18 +1,15 @@
-/* Styling for the main profile card */
-.main-content {
-    margin-left: 250px;   /* same as sidebar width */
-    padding: 30px;
-    flex-grow: 1;
-    box-sizing: border-box;
-    min-height: 100vh;    /* ensures full height */
+body {
+    display: block;
+    margin: 0;
 }
+
 .profile-container {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     max-width: 800px;
-    margin: auto;
+    margin: 20px ;
 }
 
 /* Flex container for the image and info sections */
@@ -30,7 +27,6 @@
     position: relative;
 }
 
-/* Styling for the profile picture section */
 .profile-picture-section {
     width: 200px;
     text-align: center;
@@ -47,7 +43,6 @@
     box-sizing: border-box;
 }
 
-/* Base button styling for all buttons on the page */
 .btn {
     display: block;
     width: 100%;
@@ -78,14 +73,12 @@
     box-sizing: border-box;
 }
 
-/* Gradient background for all button types */
 .btn-primary,
 .btn-danger,
 .btn-secondary { 
     background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-/* Hide the default file input */
 #imageUpload {
     display: none;
 }
@@ -128,12 +121,12 @@
 }
 
 .profile-details .detail-item textarea {
-    resize: vertical; /* Allow vertical resizing */
+    resize: vertical;
     min-height: 80px;
 }
 
 .modal {
-    display: none; /* Hidden by default */
+    display: none; 
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -154,7 +147,6 @@
     border-radius: 8px;
 }
 
-/* Ensure the image in the modal doesn't overflow */
 #image-to-crop {
     display: block;
     max-width: 100%;

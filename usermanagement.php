@@ -40,19 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
     <style>
-        /* --- General Layout and Theme (Repeated) --- */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
             background-color: #f4f7f6;
-            color: #667eea;
-            display: flex;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 30px;
-            width: 100%;
+            color: #333;
         }
 
         .header {
@@ -66,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
             margin: 0;
         }
 
-        /* --- Page-Specific CSS for User Management --- */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -127,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 
 <body>
       <?php include 'adminsidebar.php'; ?>
-    <div class="main-content">
+    <div class="content">
         <div class="header">
             <h1>User Management</h1>
         </div>

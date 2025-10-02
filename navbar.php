@@ -6,6 +6,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             margin: 0;
@@ -63,7 +64,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             margin-left: auto;
         }
 
@@ -109,7 +110,6 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         }
 
         .btn-primary {
-            width: 100%;
             padding: 12px 24px;
             font-size: 14px;
             border-radius: 8px;
@@ -120,21 +120,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn-primary:hover::before {
-            left: 100%;
+            cursor: pointer;
         }
 
         .btn-primary:hover {
@@ -147,7 +133,6 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             transform: translateY(0);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
         }
-
 
         .profile-logo {
             display: inline-flex;
@@ -182,9 +167,144 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             content: none !important;
         }
 
+        .navbar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #3b82f6;
+            cursor: pointer;
+            margin-left: 16px;
+            z-index: 1002;
+        }
+
+        @media (max-width: 992px) {
+            .nav-container {
+                padding: 0 10px;
+                height: 56px;
+            }
+
+            .navbar {
+                font-size: 15px;
+            }
+
+            .brand-text {
+                font-size: 18px;
+            }
+
+            .logo {
+                width: 26px;
+                height: 26px;
+            }
+        }
+
         @media (max-width: 768px) {
+            .navbar-toggle {
+                display: flex !important;
+            }
+
             .nav-links {
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                gap: 0;
+                box-shadow: 0 4px 16px rgba(59, 130, 246, 0.08);
                 display: none;
+                z-index: 1001;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links a,
+            .nav-links button {
+                padding: 16px 24px;
+                border-radius: 0;
+                border-bottom: 1px solid #eee;
+                width: 100%;
+                justify-content: flex-start;
+                font-size: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links button.btn-primary {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+                padding: 16px 24px;
+                border-bottom: 1px solid #eee;
+                font-size: 1rem;
+                text-align: left;
+                justify-content: flex-start;
+                display: flex;
+            }
+
+            .profile-logo {
+                width: 100%;
+                margin: 0;
+                margin-top: 8px;
+                justify-content: flex-start;
+                padding: 16px 24px;
+                border-radius: 0;
+                border-bottom: 1px solid #eee;
+                background: none;
+                box-shadow: none;
+            }
+
+            .profile-logo img {
+                width: 28px;
+                height: 28px;
+            }
+
+            .navbar {
+                height: 56px;
+                min-height: 56px;
+            }
+
+            .nav-container {
+                height: 56px;
+                min-height: 56px;
+                padding: 0 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-toggle {
+                display: flex !important;
+            }
+
+            .navbar {
+                height: 56px;
+                min-height: 56px;
+            }
+
+            .nav-container {
+                height: 56px;
+                min-height: 56px;
+                padding: 0 4px;
+            }
+
+            .brand-text {
+                font-size: 15px;
+            }
+
+            .logo {
+                width: 22px;
+                height: 22px;
+            }
+
+            .nav-links a,
+            .nav-links button {
+                font-size: 0.95rem;
+                padding: 14px 16px;
             }
         }
     </style>
@@ -197,7 +317,8 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
                 <div class="logo">🧭</div>
                 <span class="brand-text">CourseCompass</span>
             </div>
-            <div class="nav-links">
+            <button class="navbar-toggle" id="navbarToggle">&#9776;</button>
+            <div class="nav-links" id="navLinks">
                 <a href="<?= isset($home_link) ? $home_link : 'home.php' ?>" class="<?= $currentPage == 'home.php' || $currentPage == 'index.php' ? 'active' : '' ?>">Home</a>
                 <a href="about.php" class="<?= $currentPage == 'about.php' ? 'active' : '' ?>">About</a>
                 <a href="courses.php" class="<?= $currentPage == 'courses.php' ? 'active' : '' ?>">Courses</a>
@@ -211,3 +332,15 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             </div>
         </div>
     </nav>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleBtn = document.getElementById('navbarToggle');
+            const navLinks = document.getElementById('navLinks');
+            toggleBtn.addEventListener('click', function () {
+                navLinks.classList.toggle('show');
+            });
+        });
+    </script>
+</body>
+
+</html>

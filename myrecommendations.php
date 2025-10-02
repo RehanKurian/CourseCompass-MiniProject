@@ -161,7 +161,7 @@ include 'navbar.php';
         .course-title {
             font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 10px;
             color: #1f2937;
             line-height: 1.4;
             display: -webkit-box;
@@ -172,12 +172,9 @@ include 'navbar.php';
         }
         .course-description {
             color: #6b7280;
-            margin-bottom: 1.5rem;
             line-height: 1.6;
             flex-grow: 1;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -265,6 +262,108 @@ include 'navbar.php';
         .no-recommendations .quiz-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 98vw;
+                padding: 10px;
+            }
+            .courses-grid {
+                gap: 1.2rem;
+                padding: 1.2rem 0;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .course-image {
+                height: 140px;
+                font-size: 2rem;
+            }
+            .course-content {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding-top: 60px;
+            }
+            .container {
+                padding: 6px;
+            }
+            .page-header {
+                padding: 2rem 0;
+            }
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+            .courses-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+            .course-card {
+                min-width: 0;
+            }
+            .course-content {
+                padding: 0.8rem;
+            }
+            .course-title {
+                font-size: 1.1rem;
+            }
+            .course-btn {
+                font-size: 0.95rem;
+                padding: 10px 12px;
+            }
+            .no-recommendations {
+                padding: 2rem 0.5rem;
+                max-width: 98vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2px;
+            }
+            .page-header {
+                padding: 1rem 0;
+            }
+            .page-header h1 {
+                font-size: 1.1rem;
+            }
+            .courses-grid {
+                gap: 0.7rem;
+                padding: 0.5rem 0;
+            }
+            .course-image {
+                height: 80px;
+                font-size: 1.2rem;
+            }
+            .course-content {
+                padding: 10px;
+            }
+            .course-description{
+                font-size: 13px;
+            }
+            .course-title {
+                font-size: 0.95rem;
+            }
+            .course-btn {
+                font-size: 0.85rem;
+                padding: 8px 8px;
+            }
+            .no-recommendations {
+                padding: 1rem 0.2rem;
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>

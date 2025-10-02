@@ -2,25 +2,21 @@
 session_start();
 include 'db.php';
 
-// Prevent browser caching
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Expires: Sat, 1 Jan 2000 00:00:00 GMT");
 header("Pragma: no-cache");
 
-// Check if user is a logged-in admin
 if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit();
 }
 
-// --- DATA FETCHING for Dashboard ---
 $user_count = $conn->query("SELECT COUNT(*) as count FROM Users")->fetch_assoc()['count'];
 $course_count = $conn->query("SELECT COUNT(*) as count FROM Courses")->fetch_assoc()['count'];
 $feedback_count = $conn->query("SELECT COUNT(*) as count FROM feedback")->fetch_assoc()['count'];
 
-// Fetch all feedback entries
-$sql_feedback = "SELECT fid, fname, lname, email, subject, rating, message FROM feedback ORDER BY fid DESC";
-$result_feedback = $conn->query($sql_feedback);
+$feedbacks = "SELECT fid, fname, lname, email, subject, rating, message FROM feedback ORDER BY fid DESC";
+$result_feedback = $conn->query($feedbacks);
 
 $conn->close();
 ?>
@@ -32,14 +28,11 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <style>
-        .main-content {
-            margin-left: 250px;
-            padding: 30px;
-            width: 100%;
-            box-sizing: border-box;
+        body {
+            display: block;
+            margin: 0;
         }
 
-        /* --- Existing Styles --- */
         .card-container {
             display: flex;
             gap: 20px;
@@ -81,7 +74,6 @@ $conn->close();
             text-decoration: underline;
         }
 
-        /* --- Feedback Table Styles --- */
         #feedback-list {
             margin-top: 40px;
         }
@@ -116,7 +108,6 @@ $conn->close();
         .feedback-table td {
             color: #6b7280;
         }
-        
     </style>
 </head>
 
@@ -124,7 +115,7 @@ $conn->close();
 
     <?php include 'adminsidebar.php'; ?>
 
-    <div class="main-content">
+    <div class="content">
         <div class="header">
             <h1>Welcome, <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Admin'); ?>!</h1>
         </div>
@@ -142,12 +133,10 @@ $conn->close();
             <div class="card">
                 <h3>Feedbacks Submitted</h3>
                 <p><?php echo $feedback_count; ?></p>
-                <!-- This link will now be controlled by JavaScript -->
                 <a id="toggle-feedback-btn">View Feedbacks</a>
             </div>
         </div>
 
-        <!-- The feedback list section is now initially hidden -->
         <section id="feedback-list" style="display: none;">
             <h2>All Submitted Feedbacks</h2>
 
@@ -182,7 +171,7 @@ $conn->close();
         </section>
     </div>
 
-    <!-- NEW: JavaScript for Toggle Functionality -->
+    <!-- JavaScript for Toggle Functionality -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Get the button and the section to be toggled

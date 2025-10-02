@@ -103,11 +103,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <style>
         /* CSS styles remain the same as the previous version */
         body {
-            font-family: "Segoe UI", sans-serif;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
             background-color: #f4f7f6;
-            color: #667eea;
-            display: flex;
+            color: #333;
         }
 
         .main-content {
@@ -220,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 <body>
     <?php include 'adminsidebar.php'; ?>
 
-    <div class="main-content">
+    <div class="content">
         <h1>Course Management</h1>
         <?php if ($message): ?>
             <div class="message"><?php echo $message; ?></div><?php endif; ?>

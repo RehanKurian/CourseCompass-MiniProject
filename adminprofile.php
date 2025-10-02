@@ -2,7 +2,6 @@
 session_start();
 include 'db.php';
 
-// Security check: Ensure the user is an admin.
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit();
@@ -17,19 +16,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // --- Part 1: Handle standard form submission for updating user info ---
     if ($action === 'update_info') {
-        // UPDATED: Retrieve fname and lname from the form
         $fname = $_POST['fname'];
         $lname = $_POST['lname'];
         $phone_no = $_POST['phone_no'];
         $bio = $_POST['bio'];
         
-        // UPDATED: SQL query and bind_param to include fname and lname
         $stmt_update = $conn->prepare("UPDATE Users SET fname = ?, lname = ?, phone_no = ?, bio = ? WHERE user_id = ?");
         $stmt_update->bind_param("ssssi", $fname, $lname, $phone_no, $bio, $admin_id);
 
         if ($stmt_update->execute()) {
             $message = "Profile information updated successfully!";
-            $_SESSION['user_name'] = $fname; // Update session variable if you use it
+            $_SESSION['user_name'] = $fname; 
         } else {
             $message = "Error updating profile: " . $stmt_update->error;
         }
@@ -39,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif ($action === 'upload' || $action === 'remove') {
         header('Content-Type: application/json');
 
-        // UPLOAD ACTION (code remains the same)
+        // UPLOAD ACTION 
         if ($action == 'upload' && isset($_FILES['croppedImage'])) {
             $upload_dir = 'uploads/';
             $filename = 'user_' . $admin_id . '_' . time() . '.png';
@@ -57,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['success' => false, 'error' => 'File move failed.']);
             }
         }
-        // REMOVE ACTION (code remains the same)
+        // REMOVE ACTION 
         elseif ($action == 'remove') {
             $stmt_update = $conn->prepare("UPDATE Users SET profile_image = NULL WHERE user_id = ?");
             $stmt_update->bind_param("i", $admin_id);
@@ -67,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['success' => false, 'error' => 'Database update failed.']);
             }
         }
-        exit; // IMPORTANT: Stop script execution for AJAX requests
+        exit; 
     }
 }
 
@@ -90,7 +87,6 @@ $conn->close();
     <link rel="stylesheet" href="adminprofile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" defer></script>
-    <!-- CSS for validation messages -->
     <style>
         .error-message { color: #e74c3c; font-size: 0.9em; margin-top: 5px; height: 1em; }
         .form-control.invalid { border-color: #e74c3c; }
@@ -98,8 +94,7 @@ $conn->close();
 </head>
 <body>
     <?php include 'adminsidebar.php'; ?>
-    <div class="main-content">
-        <div class="header"><h1>Admin Profile</h1></div>
+    <div class="content">
 
         <?php if ($message): ?>
             <div class="message" style="background-color: #2ecc71; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px;">

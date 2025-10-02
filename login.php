@@ -1,6 +1,5 @@
 <?php
 session_start();
-// Prevent browser caching
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Expires: Sat, 1 Jan 2000 00:00:00 GMT");
 header("Pragma: no-cache");

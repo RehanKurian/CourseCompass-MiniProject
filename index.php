@@ -43,7 +43,8 @@ $top_courses = $result_top_courses->fetch_all(MYSQLI_ASSOC);
                 <div class="logo">🧭</div>
                 <span class="brand-text">CourseCompass</span>
             </div>
-            <div class="nav-links">
+            <button class="navbar-toggle" id="navbarToggle">&#9776;</button>
+            <div class="nav-links" id="navLinks">
                 <a href="about.php" class="btn">About</a>
                 <a href="contactus.php" class="btn">Contact Us</a>
                 <a href="courses.php" class="btn">Courses</a>
@@ -422,6 +423,12 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.addEventListener('mouseleave', function () {
             this.classList.remove('pulse');
         });
+    });
+
+    const toggleBtn = document.getElementById('navbarToggle');
+    const navLinks = document.getElementById('navLinks');
+    toggleBtn.addEventListener('click', function() {
+        navLinks.classList.toggle('show');
     });
 });
 </script>

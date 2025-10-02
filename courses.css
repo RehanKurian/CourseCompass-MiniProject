@@ -448,8 +448,8 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
     .courses-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: 2fr;
+        gap: 16px;
     }
 
     .filter-section {
@@ -460,13 +460,16 @@ body {
         padding: 10px 16px;
         font-size: 0.8rem;
     }
+    .course-stats{
+        gap: 5px;
+    }
 
     .course-content {
-        padding: 1.5rem;
+        padding: 16px;
     }
 
     .search-filter-section {
-        padding: 1.5rem;
+        padding: 16px;
     }
 
     .courses-section {

@@ -3,135 +3,99 @@
 // to automatically set the "active" class on the correct sidebar link.
 $currentPage = basename($_SERVER['SCRIPT_NAME']);
 ?>
-<style>
-    body {
-        font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        margin: 0;
-        background-color: #f4f7f6;
-        color: #333;
-        display: flex;
-    }
 
+<style>
     .sidebar {
-    width: 250px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #ecf0f1;
-    height: fit-content;
-    padding: 20px;
-    padding-bottom: 100px;
-    box-sizing: border-box;
-    position: fixed;
-    top: 0;
-    left: 0;
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        position: fixed;
+        height: 100%;
+        overflow: auto;
     }
 
     .sidebar-header {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
-        padding-bottom: 20px;
-        color: #fff;
+        padding: 18px 16px;
+        gap: 3px;
     }
 
     .sidebar-header .logo {
-        font-size: 22px;
+        font-size: 20px;
     }
 
     .sidebar-header h3 {
         margin: 0;
-        font-size: 1.4rem;
-        font-weight: 500;
+        font-size: 1.2rem;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        color: #ffff;
     }
 
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .sidebar ul li {
-        position: relative;
-    }
-
-    .sidebar ul li a {
+    .sidebar a {
         display: block;
-        color: #ecf0f1;
+        color: #ffff;
+        padding: 23px;
+        font-family: 'Inter', sans-serif;
         text-decoration: none;
-        padding: 23px 16px;
+        white-space: nowrap;
+        overflow: hidden;
+
+    }
+
+    .sidebar a.active {
+        background-color: #32495eff;
         border-radius: 8px;
-        font-weight: 500;
-        font-size: 1rem;
-        position: relative;
-        transition: background 0.3s, color 0.3s;
-        z-index: 1;
-        overflow: visible;
+        color: white;
     }
 
-    .sidebar ul li a:hover,
-    .sidebar ul li a.active {
-        color: #fff;
+    .sidebar a:hover:not(.active) {
+        background-color: #32495eff;
+        border-radius: 8px;
+        color: white;
     }
 
-    .sidebar ul li a::after {
-        content: '';
-        position: absolute;
-        left: 42%;
-        margin-bottom:-10px;
-        bottom: 6px;
-        transform: translateX(-50%);
-        width: 0;
-        height: 2px;
-        background: white;
-        border-radius: 2px;
-        transition: width 0.3s ease;
-        z-index: 2;
+    div.content {
+        margin-left: 200px;
+        padding: 15px 40px;
+        height: 1000px;
     }
 
-    .sidebar ul li a:hover::after,
-    .sidebar ul li a.active::after {
-        width: 70%;
+    /* On screens that are less than 700px wide, make the sidebar into a topbar */
+    @media screen and (max-width: 700px) {
+        .sidebar {
+            width: 130%;
+            height: auto;
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .sidebar-header {
+            /* Make header part of the horizontal flow */
+            padding: 10px 16px;
+            border-bottom: none;
+        }
+
+        .sidebar a {
+            float: left;
+        }
+
+        div.content {
+            margin-left: 0;
+        }
     }
 
-    .main-content {
-        padding: 30px;
-        width: 100%;
-        box-sizing: border-box;
+    /* On screens that are less than 400px, display the bar vertically */
+    @media screen and (max-width: 400px) {
+        .sidebar a {
+            text-align: center;
+            float: none;
+        }
     }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .header h1 {
-        margin: 0;
-    }
-
-    .message {
-        padding: 15px;
-        border-radius: 5px;
-        color: #fff;
-        background-color: #2ecc71;
-        margin-bottom: 20px;
-    }
-
-    .message.error {
-        background-color: #e74c3c;
-    }
-    @media print {
-    .sidebar {
-        position: static !important;
-        width: 100% !important;
-        height: auto !important;
-    }
-
-    .main-content {
-        margin-left: 0 !important;
-    }
-}
-
 </style>
 
 <div class="sidebar">
@@ -140,12 +104,12 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         <h3>CourseCompass</h3>
     </div>
 
-    <ul>
-        <li><a href="admindash.php" class="<?= $currentPage == 'admindash.php' ? 'active' : '' ?>">Dashboard</a></li>
-        <li><a href="usermanagement.php" class="<?= $currentPage == 'usermanagement.php' ? 'active' : '' ?>">User Management</a></li>
-        <li><a href="quizmanagement.php" class="<?= $currentPage == 'quizmanagement.php' ? 'active' : '' ?>">Quiz Management</a></li>
-        <li><a href="userrecommendations.php" class="<?= $currentPage == 'userrecommendations.php' ? 'active' : '' ?>">Recommendations</a></li>
-        <li><a href="coursemanagement.php" class="<?= $currentPage == 'coursemanagement.php' ? 'active' : '' ?>">Course Management</a></li>
-        <li><a href="adminprofile.php" class="<?= $currentPage == 'adminprofile.php' ? 'active' : '' ?>">Profile</a></li>
-    </ul>
+    <a href="admindash.php" class="<?= $currentPage == 'admindash.php' ? 'active' : '' ?>">Dashboard</a>
+    <a href="usermanagement.php" class="<?= $currentPage == 'usermanagement.php' ? 'active' : '' ?>">User Management</a>
+    <a href="quizmanagement.php" class="<?= $currentPage == 'quizmanagement.php' ? 'active' : '' ?>">Quiz Management</a>
+    <a href="userrecommendations.php"
+        class="<?= $currentPage == 'userrecommendations.php' ? 'active' : '' ?>">Recommendations</a>
+    <a href="coursemanagement.php" class="<?= $currentPage == 'coursemanagement.php' ? 'active' : '' ?>">Course
+        Management</a>
+    <a href="adminprofile.php" class="<?= $currentPage == 'adminprofile.php' ? 'active' : '' ?>">Profile</a>
 </div>
