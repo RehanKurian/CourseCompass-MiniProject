@@ -240,7 +240,7 @@ $stmt->close();
                              data-platform="<?= htmlspecialchars($course['platform']) ?>"
                              data-level="<?= htmlspecialchars($course['level']) ?>"
                              data-duration="<?= htmlspecialchars($course['duration']) ?>">
-                            <div class="course-image">📚</div>
+                            <div class="course-image"><img src="book.svg" alt="book icon" ></div>
                             <div class="course-content">
                                 <div class="course-meta">
                                     <span class="platform-badge"><?= htmlspecialchars($course['platform']) ?></span>

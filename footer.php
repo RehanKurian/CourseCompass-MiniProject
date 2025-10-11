@@ -13,7 +13,7 @@
 .footer-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     margin-bottom: 16px;
 }
 .footer-description {
@@ -64,7 +64,9 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <div class="footer-logo">
-                    <div class="logo">🧭</div>
+                    <div class="logo"> 
+                    <img src="compass.svg" alt="compass icon" >
+                </div>
                     <span class="brand-text">CourseCompass</span>
                 </div>
                 <p class="footer-description">
@@ -83,14 +85,14 @@
                 <h3 class="footer-title">Support</h3>
                 <ul class="footer-links">
                     <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="contactus.php">Contact Us</a></li>
                     <li><a href="#">FAQ</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h3 class="footer-title">Company</h3>
                 <ul class="footer-links">
-                    <li><a href="#">About</a></li>
+                    <li><a href="about.php">About</a></li>
                     <li><a href="#">Blog</a></li>
                     <li><a href="#">Careers</a></li>
                 </ul>

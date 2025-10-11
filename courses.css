@@ -208,7 +208,15 @@ body {
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
-    /* Prevents the image from shrinking */
+}
+
+.course-image img,
+.course-image svg {
+    width: 35px;
+    height: 35px;
+    display: block;
+    fill: #3b82f6;
+    transition: fill 0.2s;
 }
 
 .course-image::after {
@@ -228,13 +236,9 @@ body {
 
 .course-content {
     padding: 2rem;
-    /* MODIFICATION: These 3 lines are the core of the fix. */
     display: flex;
-    /* Make this a flex container */
     flex-direction: column;
-    /* Arrange its children vertically */
     flex-grow: 1;
-    /* Allows this content area to grow and fill empty space */
 }
 
 .course-meta {
@@ -268,12 +272,9 @@ body {
     margin-bottom: 1rem;
     color: #1f2937;
     line-height: 1.4;
-    /* The following lines are for truncating long titles */
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    /* Limit to 2 lines */
     line-clamp: 2;
-    /* For browsers that support it */
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -282,8 +283,7 @@ body {
     color: #6b7280;
     margin-bottom: 1.5rem;
     line-height: 1.6;
-    /* The description will now expand to its full length */
-    flex-grow: 1; /* This helps push the button to the bottom */
+    flex-grow: 1;
 }
 
 
@@ -295,7 +295,6 @@ body {
     padding-top: 1rem;
     padding-bottom: 1rem;
     border-top: 1px solid #e5e7eb;
-    /* Lightened the border slightly */
 }
 
 .rating {
@@ -460,7 +459,8 @@ body {
         padding: 10px 16px;
         font-size: 0.8rem;
     }
-    .course-stats{
+
+    .course-stats {
         gap: 5px;
     }
 

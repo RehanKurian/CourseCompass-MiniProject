@@ -37,12 +37,12 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         .nav-brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
 
-        .logo {
-            width: 30px;
-            height: 30px;
+        .logo{
+            width: 35px;
+            height: 35px;
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             border-radius: 8px;
             display: flex;
@@ -50,6 +50,14 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             justify-content: center;
             color: white;
             font-size: 1.2rem;
+        }
+         .logo img,
+        .logo svg {
+            width: 28px;
+            height: 28px;
+            display: block;
+            fill: #3b82f6;
+            transition: fill 0.2s;
         }
 
         .brand-text {
@@ -178,27 +186,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             z-index: 1002;
         }
 
-        @media (max-width: 992px) {
-            .nav-container {
-                padding: 0 10px;
-                height: 56px;
-            }
-
-            .navbar {
-                font-size: 15px;
-            }
-
-            .brand-text {
-                font-size: 18px;
-            }
-
-            .logo {
-                width: 26px;
-                height: 26px;
-            }
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 846px) {
             .navbar-toggle {
                 display: flex !important;
             }
@@ -314,7 +302,9 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-brand">
-                <div class="logo">🧭</div>
+                <div class="logo"> 
+                    <img src="compass.svg" alt="profile icon" >
+                </div>
                 <span class="brand-text">CourseCompass</span>
             </div>
             <button class="navbar-toggle" id="navbarToggle">&#9776;</button>
@@ -327,7 +317,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
                 <button class="btn-primary" onclick="location.href='signout.php'">Sign Out
                 </button>
                 <a href="profile.php" class="profile-logo" title="Profile">
-                    <img src="profileicon.svg" alt="profile icon" style="width: 24px; height: 24px;">
+                    <img src="profileicon.svg" alt="profile icon" >
                 </a>
             </div>
         </div>

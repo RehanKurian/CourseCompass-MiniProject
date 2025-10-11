@@ -27,7 +27,7 @@ $sql = "
 
 // Use a prepared statement to prevent SQL injection
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $userId); 
+$stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
 $recommendations = $result->fetch_all(MYSQLI_ASSOC);
@@ -41,14 +41,16 @@ include 'navbar.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Recommendations - CourseCompass</title>
-    
+
     <!-- Link to Google Fonts for consistent typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
     <!-- Internal CSS for styling the page and course cards -->
     <style>
         /* --- Base and Layout Styles --- */
@@ -58,13 +60,15 @@ include 'navbar.php';
             color: #333;
             margin: 0;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
+
         main {
-            padding-top: 80px; 
+            padding-top: 80px;
         }
 
         .page-header {
@@ -72,11 +76,13 @@ include 'navbar.php';
             padding: 3rem 0;
             color: #1a1a1a;
         }
+
         .page-header h1 {
             font-size: 3rem;
             font-weight: 800;
             margin-bottom: 1rem;
         }
+
         .page-header p {
             font-size: 1.1rem;
             color: #666;
@@ -103,6 +109,7 @@ include 'navbar.php';
             transition: box-shadow 0.3s, transform 0.3s;
             position: relative;
         }
+
         .course-card::before {
             content: '';
             position: absolute;
@@ -114,13 +121,16 @@ include 'navbar.php';
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
+
         .course-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
         }
+
         .course-card:hover::before {
             transform: scaleX(1);
         }
+
         .course-image {
             height: 200px;
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -131,18 +141,30 @@ include 'navbar.php';
             font-size: 3rem;
             flex-shrink: 0;
         }
+
+        .course-image img,
+        .course-image svg {
+            width: 35px;
+            height: 35px;
+            display: block;
+            fill: #3b82f6;
+            transition: fill 0.2s;
+        }
+
         .course-content {
             padding: 2rem;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
+
         .course-meta {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 1rem;
         }
+
         .platform-badge,
         .difficulty-badge {
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -154,10 +176,12 @@ include 'navbar.php';
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         .difficulty-badge {
             background: rgba(102, 126, 234, 0.1);
             color: #667eea;
         }
+
         .course-title {
             font-size: 1.4rem;
             font-weight: 700;
@@ -170,6 +194,7 @@ include 'navbar.php';
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
         .course-description {
             color: #6b7280;
             line-height: 1.6;
@@ -178,6 +203,7 @@ include 'navbar.php';
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
         .course-stats {
             display: flex;
             justify-content: space-between;
@@ -186,27 +212,31 @@ include 'navbar.php';
             padding-bottom: 1rem;
             border-top: 1px solid #e5e7eb;
         }
+
         .rating {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
+
         .stars {
             color: #fbbf24;
             font-size: 1rem;
         }
+
         .rating-text,
         .duration {
             color: #6b7280;
             font-size: 0.9rem;
             font-weight: 500;
         }
+
         .duration {
             display: flex;
             align-items: center;
             gap: 0.3rem;
         }
-    
+
         .course-btn {
             width: 100%;
             padding: 14px 20px;
@@ -225,6 +255,7 @@ include 'navbar.php';
             margin-top: auto;
             box-sizing: border-box;
         }
+
         .course-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
@@ -239,16 +270,19 @@ include 'navbar.php';
             margin: 2rem auto;
             max-width: 700px;
         }
+
         .no-recommendations h2 {
             font-size: 2rem;
             color: #1f2937;
             margin-bottom: 1rem;
         }
+
         .no-recommendations p {
             color: #6b7280;
             margin-bottom: 2rem;
             font-size: 1.1rem;
         }
+
         .no-recommendations .quiz-btn {
             display: inline-block;
             padding: 14px 28px;
@@ -259,6 +293,7 @@ include 'navbar.php';
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .no-recommendations .quiz-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
@@ -270,6 +305,7 @@ include 'navbar.php';
                 max-width: 98vw;
                 padding: 10px;
             }
+
             .courses-grid {
                 gap: 1.2rem;
                 padding: 1.2rem 0;
@@ -280,13 +316,16 @@ include 'navbar.php';
             .page-header h1 {
                 font-size: 2.2rem;
             }
+
             .courses-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
             .course-image {
                 height: 140px;
                 font-size: 2rem;
             }
+
             .course-content {
                 padding: 1.2rem;
             }
@@ -296,33 +335,42 @@ include 'navbar.php';
             main {
                 padding-top: 60px;
             }
+
             .container {
                 padding: 6px;
             }
+
             .page-header {
                 padding: 2rem 0;
             }
+
             .page-header h1 {
                 font-size: 1.5rem;
             }
+
             .courses-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
                 padding: 1rem 0;
             }
+
             .course-card {
                 min-width: 0;
             }
+
             .course-content {
                 padding: 0.8rem;
             }
+
             .course-title {
                 font-size: 1.1rem;
             }
+
             .course-btn {
                 font-size: 0.95rem;
                 padding: 10px 12px;
             }
+
             .no-recommendations {
                 padding: 2rem 0.5rem;
                 max-width: 98vw;
@@ -333,33 +381,42 @@ include 'navbar.php';
             .container {
                 padding: 2px;
             }
+
             .page-header {
                 padding: 1rem 0;
             }
+
             .page-header h1 {
                 font-size: 1.1rem;
             }
+
             .courses-grid {
                 gap: 0.7rem;
                 padding: 0.5rem 0;
             }
+
             .course-image {
                 height: 80px;
                 font-size: 1.2rem;
             }
+
             .course-content {
                 padding: 10px;
             }
-            .course-description{
+
+            .course-description {
                 font-size: 13px;
             }
+
             .course-title {
                 font-size: 0.95rem;
             }
+
             .course-btn {
                 font-size: 0.85rem;
                 padding: 8px 8px;
             }
+
             .no-recommendations {
                 padding: 1rem 0.2rem;
                 font-size: 0.95rem;
@@ -367,6 +424,7 @@ include 'navbar.php';
         }
     </style>
 </head>
+
 <body>
     <main>
         <div class="container">
@@ -378,7 +436,7 @@ include 'navbar.php';
                 <div class="courses-grid">
                     <?php foreach ($recommendations as $course): ?>
                         <div class="course-card fade-in" data-category="<?= htmlspecialchars($course['category']) ?>">
-                            <div class="course-image">📚</div>
+                            <div class="course-image"><img src="book.svg" alt="book icon"></div>
                             <div class="course-content">
                                 <div class="course-meta">
                                     <span class="platform-badge"><?= htmlspecialchars($course['platform']) ?></span>
@@ -408,7 +466,8 @@ include 'navbar.php';
                 <!-- If no recommendations are found, display this message -->
                 <div class="no-recommendations">
                     <h2>No Recommendations Found</h2>
-                    <p>You don't have any recommendations yet. Take our quick quiz to discover courses tailored just for you!</p>
+                    <p>You don't have any recommendations yet. Take our quick quiz to discover courses tailored just for
+                        you!</p>
                     <a href="quiz.php" class="quiz-btn">Take the Quiz Now</a>
                 </div>
             <?php endif; ?>
@@ -416,4 +475,5 @@ include 'navbar.php';
     </main>
     <?php include 'footer.php'; ?>
 </body>
+
 </html>
