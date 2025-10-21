@@ -46,6 +46,15 @@
     border-top: 1px solid #333;
     color: #999;
 }
+.logo img,
+.logo svg {
+    width: 28px;
+    height: 28px;
+    display: block;
+    fill: #3b82f6;
+    transition: fill 0.2s;
+ }
+
 @media (max-width: 992px) {
     .footer-grid {
         grid-template-columns: repeat(2, 1fr);

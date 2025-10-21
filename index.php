@@ -70,7 +70,7 @@ $top_courses = $result_top_courses->fetch_all(MYSQLI_ASSOC);
                     </h1>
                     <p class="hero-description">
                         Join over <strong>50,000+ learners</strong> who have transformed their careers with our
-                        AI-powered course recommendations. Find your perfect learning path in seconds.
+                        intelligent course recommendation system. Find your perfect learning path in seconds.
                     </p>
 
                     <div class="hero-stats">
@@ -184,7 +184,7 @@ $top_courses = $result_top_courses->fetch_all(MYSQLI_ASSOC);
                                     </div>
                                     <h3 class="course-title"><?php echo htmlspecialchars($course['title']); ?></h3>
                                     <p class="course-description">
-                                        <?php echo htmlspecialchars(substr($course['description'], 0, 100)) . '...'; ?></p>
+                                        <?php echo htmlspecialchars($course['description']); ?></p>
                                     <div class="course-stats">
                                         <div class="rating">
                                             <span class="stars">★★★★★</span>

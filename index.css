@@ -16,7 +16,7 @@ body {
 .container {
     position: relative;
     z-index: 2;
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -34,9 +34,8 @@ body {
 }
 
  .nav-container {
-     max-width: 1150px;
+     max-width: 1300px;
      margin: 0 auto;
-     padding: 0 20px;
      display: flex;
      justify-content: space-between;
      align-items: center;
@@ -72,7 +71,7 @@ body {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 18px;
 }
  .nav-links a {
     text-decoration: none;
@@ -102,7 +101,7 @@ body {
     align-items: center;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     color: #777373;
 }
@@ -163,7 +162,6 @@ body {
     gap: 3rem;
     align-items: center;
     min-height: 70vh;
-    margin-top:55px
 }
 
 .hero-text {
@@ -217,7 +215,7 @@ body {
 }
 
 .hero-description {
-    font-size: 14px;
+    font-size: 17px;
     line-height: 1.7;
     margin-bottom: 2rem;
     color: rgba(255, 255, 255, 0.9);
@@ -419,19 +417,18 @@ body {
 
 .card-1 {
     top: 20%;
-    right: 10%;
+    right: 7%;
     animation-delay: 0s;
 }
 
 .card-2 {
     bottom: 30%;
-    left: -10%;
     animation-delay: 2s;
 }
 
 .card-3 {
-    top: 60%;
-    right: -5%;
+    top: 75%;
+    right: 10%;
     animation-delay: 4s;
 }
 
@@ -649,7 +646,7 @@ body {
 
 /* --- Course Card Specifics --- */
 .course-image {
-    height: 150px; /* Reduced height */
+    height: 150px; 
     background: linear-gradient(135deg, #667eea, #764ba2);
     display: flex;
     align-items: center;
@@ -660,6 +657,9 @@ body {
 
 .course-content {
     padding: 1.5rem;
+    display: flex;          
+    flex-direction: column; 
+    flex-grow: 1;
 }
 
 .course-meta {
@@ -705,6 +705,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
+    margin-top: auto;
 }
 
 .rating {
@@ -727,6 +728,7 @@ body {
     width: 100%;
     padding: 1rem;
     text-decoration: none;
+    text-align: center;
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     border: none;

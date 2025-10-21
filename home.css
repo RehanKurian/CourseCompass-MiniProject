@@ -18,19 +18,19 @@ body {
 }
 
 /* --- Button Styles --- */
-/* Base button style */
+
 .btn {
     padding: 12px 24px;
-    border: 2px solid transparent; /* Set a transparent border to prevent size changes on hover */
+    border: 2px solid transparent; 
     border-radius: 8px;
     font-weight: 600;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px; /* Adds space between text and icon */
+    gap: 8px; 
     cursor: pointer;
-    transition: all 0.3s ease; /* Simplified transition */
+    transition: all 0.3s ease; 
     font-size: 1em;
 }
 
@@ -42,9 +42,9 @@ body {
     position: relative;
     overflow: hidden;
     text-decoration: none;
-    display: inline-flex;    /* Treats the button as a flex container */
-    align-items: center;     /* Vertically centers the items (text and SVG) */
-    justify-content: center; /* Horizontally centers the items */
+    display: inline-flex;    
+    align-items: center;     
+    justify-content: center; 
     gap: 5px;
 }
 
@@ -79,7 +79,7 @@ body {
 .btn-secondary {
     background: white;
     color: #3b82f6;
-    border-color: #3b82f6; /* Use border-color instead of border */
+    border-color: #3b82f6; 
 }
 
 .btn-secondary:hover {
@@ -110,7 +110,7 @@ body {
 
 /* SVG icon styling within buttons */
 .btn svg {
-    stroke-width: 2; /* Consistent stroke width */
+    stroke-width: 2; 
 }
 
 /* --- Hero Section --- */
@@ -131,7 +131,7 @@ body {
 .hero-title {
     font-size: 4rem;
     font-weight: 700;
-    margin-bottom: 24px;
+    margin-bottom: 27px;
     line-height: 1.1;
     color: #1a1a1a;
 }
@@ -209,7 +209,7 @@ body {
 
 /* --- Features Section --- */
 .features {
-    padding: 80px 0;
+    padding: 40px 0px 80px 0px;
 }
 
 .features-grid {

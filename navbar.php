@@ -25,7 +25,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1350px;
             margin: 0 auto;
             padding: 0 20px;
             display: flex;
@@ -40,7 +40,21 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             gap: 6px;
         }
 
-        .logo{
+        /* Make the brand clickable and preserve layout */
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brand-link:hover .brand-text,
+        .brand-link:focus .brand-text {
+            color: #667eea;
+        }
+
+        .logo {
             width: 35px;
             height: 35px;
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
@@ -51,7 +65,8 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             color: white;
             font-size: 1.2rem;
         }
-         .logo img,
+
+        .logo img,
         .logo svg {
             width: 28px;
             height: 28px;
@@ -72,7 +87,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 18px;
             margin-left: auto;
         }
 
@@ -86,10 +101,10 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
             border: none;
             background: none;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 15px;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             position: relative;
             transition: background 0.3s, color 0.3s;
         }
@@ -302,14 +317,16 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-brand">
-                <div class="logo"> 
-                    <img src="compass.svg" alt="profile icon" >
-                </div>
-                <span class="brand-text">CourseCompass</span>
+                <a href="home.php" class="brand-link">
+                    <div class="logo">
+                        <img src="compass.svg" alt="profile icon">
+                    </div>
+                    <span class="brand-text">CourseCompass</span>
+                </a>
             </div>
             <button class="navbar-toggle" id="navbarToggle">&#9776;</button>
             <div class="nav-links" id="navLinks">
-                <a href="<?= isset($home_link) ? $home_link : 'home.php' ?>" class="<?= $currentPage == 'home.php' || $currentPage == 'index.php' ? 'active' : '' ?>">Home</a>
+                <a href="home.php" class="<?= $currentPage == 'home.php' ? 'active' : '' ?>">Home</a>
                 <a href="about.php" class="<?= $currentPage == 'about.php' ? 'active' : '' ?>">About</a>
                 <a href="courses.php" class="<?= $currentPage == 'courses.php' ? 'active' : '' ?>">Courses</a>
                 <a href="myrecommendations.php" class="<?= $currentPage == 'myrecommendations.php' ? 'active' : '' ?>">My Recommendations</a>
@@ -317,7 +334,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
                 <button class="btn-primary" onclick="location.href='signout.php'">Sign Out
                 </button>
                 <a href="profile.php" class="profile-logo" title="Profile">
-                    <img src="profileicon.svg" alt="profile icon" >
+                    <img src="profileicon.svg" alt="profile icon">
                 </a>
             </div>
         </div>
