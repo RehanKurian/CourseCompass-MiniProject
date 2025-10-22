@@ -8,7 +8,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
     .sidebar {
         margin: 0;
         padding: 0;
-        width: 200px;
+        width: 220px;
         background: linear-gradient(135deg, #667eea, #764ba2);
         position: fixed;
         height: 100%;
@@ -38,7 +38,7 @@ $currentPage = basename($_SERVER['SCRIPT_NAME']);
     .sidebar a {
         display: block;
         color: #ffff;
-        padding: 23px;
+        padding: 25px 23px;
         font-family: 'Inter', sans-serif;
         text-decoration: none;
         white-space: nowrap;

@@ -1,12 +1,12 @@
 <?php
 session_start();
-include 'db.php'; // Your database connection file
+include 'db.php'; 
 
 // --- Initialize variables for the edit mode ---
 $edit_mode = false;
 $course_to_edit = null;
 $duration_number = '';
-$duration_unit = 'Weeks'; // Default unit
+$duration_unit = 'Weeks'; 
 
 // --- Check if the page is in edit mode from a GET request ---
 if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
@@ -20,7 +20,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
     $result = $stmt->get_result();
     $course_to_edit = $result->fetch_assoc();
 
-    // NEW: Parse the 'duration' string to pre-fill the form
     if ($course_to_edit && !empty($course_to_edit['duration'])) {
         // Use explode to split the string by the first space. Limit to 2 parts.
         $parts = explode(' ', $course_to_edit['duration'], 2);
@@ -39,8 +38,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
 $message = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 
-    // --- Combine duration number and unit into a single string ---
-    // This happens for both 'add' and 'update' actions.
+    // Combine duration number and unit into a single string 
     $combined_duration = '';
     if (isset($_POST['duration_number']) && isset($_POST['duration_unit']) && !empty($_POST['duration_number'])) {
         $combined_duration = trim($_POST['duration_number']) . ' ' . trim($_POST['duration_unit']);
@@ -48,9 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 
     // --- ADD course logic ---
     if ($_POST['action'] == 'add_course') {
-        // The SQL query uses the single 'duration' column
         $stmt = $conn->prepare("INSERT INTO Courses (title, platform, duration, level, category, url, description, rating, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        // The bind_param string is "sssssssid", reflecting the VARCHAR duration.
         $stmt->bind_param("sssssssid", $_POST['title'], $_POST['platform'], $combined_duration, $_POST['level'], $_POST['category'], $_POST['url'], $_POST['description'], $_POST['rating'], $_POST['price']);
 
         if ($stmt->execute()) {
@@ -64,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     // --- UPDATE course logic ---
     if ($_POST['action'] == 'update_course') {
         $stmt = $conn->prepare("UPDATE Courses SET title=?, platform=?, duration=?, level=?, category=?, url=?, description=?, rating=?, price=? WHERE course_id=?");
-        // The bind_param string is updated for the single duration string and the course_id.
         $stmt->bind_param("sssssssidi", $_POST['title'], $_POST['platform'], $combined_duration, $_POST['level'], $_POST['category'], $_POST['url'], $_POST['description'], $_POST['rating'], $_POST['price'], $_POST['course_id']);
 
         if ($stmt->execute()) {
@@ -74,13 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
         }
         $stmt->close();
         $edit_mode = false;
-        header("Location: coursemanagement.php"); // Redirect to clear the form and URL
+        header("Location: coursemanagement.php"); 
         exit();
     }
 
     // --- DELETE course logic ---
     if ($_POST['action'] == 'delete_course') {
-        // This part remains unchanged
         $course_id = $_POST['course_id'];
         $stmt = $conn->prepare("DELETE FROM Courses WHERE course_id = ?");
         $stmt->bind_param("i", $course_id);
@@ -101,7 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Management</title>
     <style>
-        /* CSS styles remain the same as the previous version */
         body {
             font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
@@ -226,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 
         <div class="form-container">
             <h3><?php echo $edit_mode ? 'Edit Course' : 'Add New Course'; ?></h3>
-            <form action="coursemanagement.php" method="POST">
+            <form id="courseForm" action="coursemanagement.php" method="POST">
                 <input type="hidden" name="action" value="<?php echo $edit_mode ? 'update_course' : 'add_course'; ?>">
                 <?php if ($edit_mode): ?><input type="hidden" name="course_id"
                         value="<?php echo htmlspecialchars($course_to_edit['course_id']); ?>"><?php endif; ?>
@@ -234,17 +227,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
                 <div class="form-grid">
                     <div><label>Title</label><input type="text" name="title"
                             value="<?php echo htmlspecialchars($course_to_edit['title'] ?? ''); ?>" required></div>
-                    <div><label>Platform</label><input type="text" name="platform"
-                            value="<?php echo htmlspecialchars($course_to_edit['platform'] ?? ''); ?>"></div>
+                    <div>
+                        <label>Platform</label>
+                        <input type="text" name="platform" id="platform" value="<?php echo htmlspecialchars($course_to_edit['platform'] ?? ''); ?>">
+                        <small id="platform_error" class="validation-error"></small>
+                    </div>
 
                     <!-- UPDATED: Duration fields with correct names and pre-filled values -->
                     <div>
                         <label>Duration</label>
                         <div style="display: flex; gap: 10px;">
-                            <!-- Name is 'duration_number' -->
-                            <input type="number" name="duration_number" placeholder="e.g., 6"
+                            <input type="number" name="duration_number" id="duration_number"
                                 value="<?php echo htmlspecialchars($duration_number); ?>" style="flex: 2;">
-                            <!-- Name is 'duration_unit' -->
+                            <small id="duration_error" class="validation-error" style="margin-top:6px;"></small>
                             <select name="duration_unit" style="flex: 1;">
                                 <option value="Days" <?php echo ($duration_unit == 'Days') ? 'selected' : ''; ?>>Days
                                 </option>
@@ -267,10 +262,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
                         </select>
                     </div>
 
-                    <div><label>Category</label><input type="text" name="category"
-                            value="<?php echo htmlspecialchars($course_to_edit['category'] ?? ''); ?>"></div>
+                    <div>
+                        <label>Category</label>
+                        <input type="text" name="category" id="category" value="<?php echo htmlspecialchars($course_to_edit['category'] ?? ''); ?>">
+                        <small id="category_error" class="validation-error"></small>
+                    </div>
                     <div><label>URL</label><input type="text" name="url"
-                            value="<?php echo htmlspecialchars($course_to_edit['url'] ?? ''); ?>"></div>
+                            value="<?php echo htmlspecialchars($course_to_edit['url'] ?? ''); ?>" id="url"></div>
+                        <small id="url_error" class="validation-error"></small>
                     <div>
                         <label>Price</label>
                         <input type="number" step="0.01" name="price" id="price"
@@ -295,14 +294,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
                     <button type="submit"
                         class="btn btn-primary"><?php echo $edit_mode ? 'Update Course' : 'Add Course'; ?></button>
                     <?php if ($edit_mode): ?><a href="coursemanagement.php" class="btn btn-secondary">Cancel
-                            Edit</a><?php endif; ?>
+                             Edit</a><?php endif; ?>
                 </div>
             </form>
         </div>
 
         <h3 style="margin-top: 30px;">Existing Courses</h3>
         <table>
-            <!-- Table displays the combined duration string directly from the DB -->
             <thead>
                 <tr>
                     <th>ID</th>
@@ -315,7 +313,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
             </thead>
             <tbody>
                 <?php
-                // UPDATED: Fetched 'duration' to display in the table
                 $result = $conn->query("SELECT course_id, title, duration, category, price FROM Courses ORDER BY course_id");
                 while ($course = $result->fetch_assoc()):
                     ?>
@@ -343,39 +340,131 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 
     <script>
         // Purpose: Provide immediate feedback to the user for specific fields.
+        const form = document.getElementById('courseForm');
+        const platformInput = document.getElementById('platform');
+        const durationInput = document.getElementById('duration_number');
+        const categoryInput = document.getElementById('category');
+        const urlInput = document.getElementById('url');
         const priceInput = document.getElementById('price');
         const ratingInput = document.getElementById('rating');
         const descriptionInput = document.getElementById('description');
+
+        const platformError = document.getElementById('platform_error');
+        const durationError = document.getElementById('duration_error');
+        const categoryError = document.getElementById('category_error');
+        const urlError = document.getElementById('url_error');
         const priceError = document.getElementById('price_error');
         const ratingError = document.getElementById('rating_error');
         const descriptionError = document.getElementById('description_error');
 
-        // --- Live validation for the Price field ---
-        priceInput.addEventListener('input', function () {
-            if (this.value < 0) {
+        const lettersOnly = /^[A-Za-z\s]+$/;
+        const urlRegex = /^(https?:\/\/)?([A-Za-z0-9-]+\.)+[A-Za-z]{2,}(\/\S*)?$/i;
+
+        // Live validators
+        platformInput && platformInput.addEventListener('input', function () {
+            if (!this.value.trim()) {
+                platformError.textContent = 'Platform is required.';
+            } else if (!lettersOnly.test(this.value.trim())) {
+                platformError.textContent = 'Platform should contain letters only.';
+            } else {
+                platformError.textContent = '';
+            }
+        });
+
+        durationInput && durationInput.addEventListener('input', function () {
+            if (this.value === '' || this.value === null) {
+                durationError.textContent = 'Duration is required.';
+            } else if (!/^\d+$/.test(String(this.value))) {
+                durationError.textContent = 'Duration must be a whole number.';
+            } else {
+                durationError.textContent = '';
+            }
+        });
+
+        categoryInput && categoryInput.addEventListener('input', function () {
+            if (!this.value.trim()) {
+                categoryError.textContent = 'Category is required.';
+            } else if (!lettersOnly.test(this.value.trim())) {
+                categoryError.textContent = 'Category should contain letters only.';
+            } else {
+                categoryError.textContent = '';
+            }
+        });
+
+        urlInput && urlInput.addEventListener('input', function () {
+            if (!this.value.trim()) {
+                urlError.textContent = '';
+                return;
+            }
+            if (!urlRegex.test(this.value.trim())) {
+                urlError.textContent = 'Please enter a valid URL (e.g. https://example.com).';
+            } else {
+                urlError.textContent = '';
+            }
+        });
+
+        priceInput && priceInput.addEventListener('input', function () {
+            if (this.value === '' || this.value === null) {
+                priceError.textContent = '';
+                return;
+            }
+            if (isNaN(parseFloat(this.value))) {
+                priceError.textContent = 'Price must be a number.';
+            } else if (parseFloat(this.value) < 0) {
                 priceError.textContent = 'Price cannot be negative.';
             } else {
                 priceError.textContent = '';
             }
         });
 
-        // --- Live validation for the Rating field ---
-        ratingInput.addEventListener('input', function () {
+        ratingInput && ratingInput.addEventListener('input', function () {
+            if (this.value === '' || this.value === null) {
+                ratingError.textContent = '';
+                return;
+            }
             const val = parseFloat(this.value);
-            if (val < 0.0 || val > 5.0) {
+            if (isNaN(val)) {
+                ratingError.textContent = 'Rating must be numeric.';
+            } else if (val < 0.0 || val > 5.0) {
                 ratingError.textContent = 'Rating must be between 0.0 and 5.0.';
             } else {
                 ratingError.textContent = '';
             }
         });
 
-        // --- Live validation for the Description field ---
-        descriptionInput.addEventListener('input', function () {
+        descriptionInput && descriptionInput.addEventListener('input', function () {
             const maxLength = 500;
             if (this.value.length > maxLength) {
                 descriptionError.textContent = `Description cannot exceed ${maxLength} characters.`;
             } else {
                 descriptionError.textContent = '';
+            }
+        });
+
+        // Final validation before submit
+        form && form.addEventListener('submit', function (e) {
+            let valid = true;
+
+            // Trigger each validator to populate errors
+            platformInput && platformInput.dispatchEvent(new Event('input'));
+            durationInput && durationInput.dispatchEvent(new Event('input'));
+            categoryInput && categoryInput.dispatchEvent(new Event('input'));
+            urlInput && urlInput.dispatchEvent(new Event('input'));
+            priceInput && priceInput.dispatchEvent(new Event('input'));
+            ratingInput && ratingInput.dispatchEvent(new Event('input'));
+            descriptionInput && descriptionInput.dispatchEvent(new Event('input'));
+
+            const errorElements = [platformError, durationError, categoryError, urlError, priceError, ratingError, descriptionError];
+            errorElements.forEach(el => { if (el && el.textContent) valid = false; });
+
+            if (!valid) {
+                e.preventDefault();
+                // Optionally focus first error field
+                const firstErrorField = [platformInput, durationInput, categoryInput, urlInput, priceInput, ratingInput, descriptionInput].find((fld, idx) => {
+                    const err = errorElements[idx];
+                    return fld && err && err.textContent;
+                });
+                if (firstErrorField) firstErrorField.focus();
             }
         });
     </script>

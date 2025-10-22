@@ -14,7 +14,6 @@ $popular_categories = $result_categories->fetch_all(MYSQLI_ASSOC);
 
 
 // 2. Query for Top-Rated Courses
-// This query now serves as the only source for the "Top Courses" section.
 $sql_top_courses = "
     SELECT title, platform, level, description, rating, duration, url
     FROM courses

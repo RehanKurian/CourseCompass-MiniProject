@@ -341,6 +341,7 @@ while ($row = $courses_result->fetch_assoc()) {
                 <div class="form-group">
                     <label for="question_text">Question Text</label>
                     <input type="text" id="question_text" name="question_text" class="form-control" required>
+                    <small id="question_error" class="error-message" style="display:block;margin-top:6px;color:red;"></small>
                 </div>
                 <button type="submit" name="add_question" class="btn btn-submit">Add Question</button>
             </form>
@@ -368,6 +369,7 @@ while ($row = $courses_result->fetch_assoc()) {
                     <label for="option_text_multiple">Option Texts (one per line)</label>
                     <textarea id="option_text_multiple" name="option_text_multiple" class="form-control"
                         placeholder="Enter each option on a new line" rows="5" required></textarea>
+                    <small id="options_error" class="error-message" style="display:block;margin-top:6px;color:red;"></small>
                 </div>
                 <button type="submit" name="add_option" class="btn btn-submit">Add Options</button>
             </form>
@@ -395,6 +397,7 @@ while ($row = $courses_result->fetch_assoc()) {
                 <div class="form-group">
                     <label for="tag_name">New Tag Name</label>
                     <input type="text" id="tag_name" name="tag_name" class="form-control" required>
+                    <small id="tag_error" class="error-message" style="display:block;margin-top:6px;color:red;"></small>
                 </div>
                 <div class="form-group">
                     <label for="course_id">Assign to Course</label>
@@ -409,6 +412,7 @@ while ($row = $courses_result->fetch_assoc()) {
                 <div class="form-group">
                     <label for="weight">Assign Weight (1-3)</label>
                     <input type="number" id="weight" name="weight" class="form-control" min="1" max="3" required>
+                    <small id="weight_error" class="error-message" style="display:block;margin-top:6px;color:red;"></small>
                 </div>
                 <button type="submit" name="add_tag_assignment" class="btn btn-submit">Create & Assign Tag</button>
             </form>
@@ -416,6 +420,115 @@ while ($row = $courses_result->fetch_assoc()) {
 
     </div>
 
-</body>
+    <script>
+        (function () {
+            const lettersOnly = /^[A-Za-z\s]+$/;
 
-</html>
+            // --- Question (Step 1) ---
+            const questionInput = document.getElementById('question_text');
+            const questionError = document.getElementById('question_error');
+            if (questionInput) {
+                const qForm = questionInput.closest('form');
+                questionInput.addEventListener('input', () => {
+                    const v = questionInput.value.trim();
+                    if (!v) {
+                        questionError.textContent = 'Question text is required.';
+                    } else if (!lettersOnly.test(v)) {
+                        questionError.textContent = 'Only letters and spaces are allowed.';
+                    } else {
+                        questionError.textContent = '';
+                    }
+                });
+                if (qForm) {
+                    qForm.addEventListener('submit', function (e) {
+                        questionInput.dispatchEvent(new Event('input'));
+                        if (questionError.textContent) {
+                            e.preventDefault();
+                            questionInput.focus();
+                        }
+                    });
+                }
+            }
+
+            // --- Options (Step 2) ---
+            const optionsTextarea = document.getElementById('option_text_multiple');
+            const optionsError = document.getElementById('options_error');
+            if (optionsTextarea) {
+                const oForm = optionsTextarea.closest('form');
+                const validateOptions = () => {
+                    const raw = optionsTextarea.value.split('\n').map(s => s.trim()).filter(s => s !== '');
+                    if (raw.length === 0) {
+                        optionsError.textContent = 'Please enter at least one option.';
+                        return false;
+                    }
+                    for (let i = 0; i < raw.length; i++) {
+                        if (!lettersOnly.test(raw[i])) {
+                            optionsError.textContent = `Option ${i + 1} must contain only letters and spaces.`;
+                            return false;
+                        }
+                    }
+                    optionsError.textContent = '';
+                    return true;
+                };
+                optionsTextarea.addEventListener('input', validateOptions);
+                if (oForm) {
+                    oForm.addEventListener('submit', function (e) {
+                        if (!validateOptions()) {
+                            e.preventDefault();
+                            optionsTextarea.focus();
+                        }
+                    });
+                }
+            }
+
+            // --- Tag name & Weight (Step 3) ---
+            const tagInput = document.getElementById('tag_name');
+            const tagError = document.getElementById('tag_error');
+            const weightInput = document.getElementById('weight');
+            const weightError = document.getElementById('weight_error');
+            const tagForm = tagInput ? tagInput.closest('form') : null;
+
+            if (tagInput) {
+                tagInput.addEventListener('input', () => {
+                    const v = tagInput.value.trim();
+                    if (!v) {
+                        tagError.textContent = 'Tag name is required.';
+                    } else if (!lettersOnly.test(v)) {
+                        tagError.textContent = 'Tag name should contain letters and spaces only.';
+                    } else {
+                        tagError.textContent = '';
+                    }
+                });
+            }
+
+            if (weightInput) {
+                weightInput.addEventListener('input', () => {
+                    const v = weightInput.value;
+                    const n = Number(v);
+                    if (v === '' || isNaN(n)) {
+                        weightError.textContent = 'Weight is required.';
+                    } else if (!Number.isInteger(n) || n < 1 || n > 3) {
+                        weightError.textContent = 'Weight must be an integer between 1 and 3.';
+                    } else {
+                        weightError.textContent = '';
+                    }
+                });
+            }
+
+            if (tagForm) {
+                tagForm.addEventListener('submit', function (e) {
+                    // Trigger validations
+                    tagInput && tagInput.dispatchEvent(new Event('input'));
+                    weightInput && weightInput.dispatchEvent(new Event('input'));
+                    if ((tagError && tagError.textContent) || (weightError && weightError.textContent)) {
+                        e.preventDefault();
+                        if (tagError && tagError.textContent) tagInput.focus();
+                        else weightInput.focus();
+                    }
+                });
+            }
+        })();
+    </script>
+ </body>
+ 
+ </html>

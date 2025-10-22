@@ -131,7 +131,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["signup"])) {
                     <?php if (isset($login_error)): ?>
                         <div class="form-error"><?php echo $login_error; ?></div>
                     <?php endif; ?>
-                    
+
+                    <div class="forgot-password">
+                        <a href="#">Forgot password?</a>
+                    </div>
+
                     <button type="submit" name="login" class="btn btn-primary btn-full">Sign In</button>
                 </form>
 
@@ -240,7 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["signup"])) {
 
         // Validation regex
         const nameRegex = /^[A-Za-z]+$/;
-        const emailRegex = /^\S+@\S+\.\S+$/;
+        const emailRegex = /^[A-Za-z][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         const phoneRegex = /^[6-9]\d{9}$/;
 
         // Live validation for Login
